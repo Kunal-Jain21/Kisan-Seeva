@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="settings_select_state">
+        <item>Maharashtra</item>
+        <item>Kerala</item>
+        <item>Bihar</item>
+        <item>Punjab</item>
+    </string-array>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Mandi Settings">
+
+    <ListPreference android:title="Select State"
+        android:defaultValue="All"
+        android:entries="@array/settings_select_state"
+        android:entryValues="@array/settings_select_state"
+        android:key="select_state"
+        />
+
+
+</PreferenceScreen>

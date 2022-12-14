@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home" />
+    <item
+        android:id="@+id/mandi"
+        android:icon="@drawable/ic_baseline_store_mall_directory_24"
+        android:title="Mandi" />
+    <item
+        android:id="@+id/renting"
+        android:icon="@drawable/ic_baseline_agriculture_24"
+        android:title="Renting" />
+</menu>
