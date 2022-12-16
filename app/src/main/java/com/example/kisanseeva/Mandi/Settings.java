@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toolbar;
 
 import com.example.kisanseeva.MainActivity;
+import com.example.kisanseeva.MandiFragment;
 import com.example.kisanseeva.R;
 
 public class Settings extends Fragment {

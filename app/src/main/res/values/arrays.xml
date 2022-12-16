@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="settings_select_state">
+        <item>All</item>
         <item>Maharashtra</item>
         <item>Kerala</item>
         <item>Bihar</item>

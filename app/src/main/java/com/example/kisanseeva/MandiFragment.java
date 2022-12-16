@@ -1,9 +1,9 @@
 package com.example.kisanseeva;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,7 +17,7 @@ import com.example.kisanseeva.Mandi.cropModel;
 
 import androidx.annotation.NonNull;
 
-import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,7 +61,7 @@ public class MandiFragment extends Fragment {
 
         cropAdapter = new CropAdapter(cropArrayList, getContext());
         recycle.setAdapter(cropAdapter);
-        getCrop();
+        getCrop("All");
         cropAdapter.notifyDataSetChanged();
 
         return view;
@@ -115,10 +116,19 @@ public class MandiFragment extends Fragment {
         }
     }
 
-    private void getCrop(){
+    public void getCrop(String cropName){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String preferenceString = sharedPrefs.getString("select_state", "All");
+
         cropArrayList.clear();
         String base_url = "https://data.gov.in/";
-        String url ="https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001888f0650bd234d6d721fe6a18a68ae33&format=json&limit=10000";
+        String url = "";
+        if (Objects.equals(preferenceString, "All")) {
+            url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001888f0650bd234d6d721fe6a18a68ae33&format=json&limit=10000";
+        }
+        else {
+            url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001888f0650bd234d6d721fe6a18a68ae33&format=json&limit=10000&filters[state]=" + preferenceString;
+        }
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(base_url).addConverterFactory(GsonConverterFactory.create()).build();
         RetroFitAPI retroFitAPI = retrofit.create(RetroFitAPI.class);
@@ -144,4 +154,5 @@ public class MandiFragment extends Fragment {
             }
         });
     }
+
 }
