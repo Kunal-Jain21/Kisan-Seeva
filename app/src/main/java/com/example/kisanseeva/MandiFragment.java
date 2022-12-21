@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kisanseeva.Mandi.Crop;
@@ -61,6 +62,7 @@ public class MandiFragment extends Fragment {
 
         cropAdapter = new CropAdapter(cropArrayList, getContext());
         recycle.setAdapter(cropAdapter);
+        recycle.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         getCrop("All");
         cropAdapter.notifyDataSetChanged();
 

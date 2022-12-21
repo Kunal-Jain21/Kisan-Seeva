@@ -1,7 +1,6 @@
 package com.example.kisanseeva.Mandi;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import java.util.List;
 public class CropAdapter extends RecyclerView.Adapter<CropAdapter.CropViewHolder> {
 
     private ArrayList<Crop> cropArrayList;
-    private Context context;
+    private final Context context;
 
     public CropAdapter(ArrayList<Crop> cropArrayList, Context context) {
         this.cropArrayList = cropArrayList;
@@ -33,17 +32,16 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.CropViewHolder
     @NonNull
     @Override
     public CropViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_style, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.element_style, parent, false);
         return new CropAdapter.CropViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CropViewHolder holder, int position) {
         Crop crop = cropArrayList.get(position);
-        Log.v("adapter", crop.getCommodity());
         holder.cropName.setText(crop.getCommodity());
         holder.price.setText(crop.getModal_price());
-        holder.state.setText(crop.getState());
+        holder.state.setText(String.format("%s,%s", crop.getMarket(), crop.getState()));
         holder.date.setText(crop.getArrival_date());
     }
 
