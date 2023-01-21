@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.kisanseeva.Renting.GiveOnRent.GiveOnRent;
+import com.example.kisanseeva.Renting.TakeOnRent.TakeOnRent;
+
 public class RentingFragment extends Fragment {
     private RadioButton radio0, radio1;
     private RadioGroup radioGroup;
