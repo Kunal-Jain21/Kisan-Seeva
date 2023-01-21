@@ -3,6 +3,7 @@ package com.example.kisanseeva;
 import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -118,6 +119,7 @@ public class HomeFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @SuppressLint("SetTextI18n")
     private void classifyImage(Bitmap image) {
         try {
             LiteModelPlantDiseaseDefault1 model = LiteModelPlantDiseaseDefault1.newInstance(getContext());
