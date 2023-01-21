@@ -1,4 +1,4 @@
-package com.example.kisanseeva.Renting;
+package com.example.kisanseeva.Renting.TakeOnRent;
 
 public class TakeOnRentModel {
     private String equipment_name;

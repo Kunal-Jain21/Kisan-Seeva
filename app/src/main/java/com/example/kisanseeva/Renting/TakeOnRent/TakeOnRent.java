@@ -1,18 +1,20 @@
-package com.example.kisanseeva;
+package com.example.kisanseeva.Renting.TakeOnRent;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kisanseeva.Renting.RentAdapter;
-import com.example.kisanseeva.Renting.TakeOnRentModel;
+import com.example.kisanseeva.R;
+import com.example.kisanseeva.rented_product_list;
 
 import java.util.ArrayList;
 
@@ -21,7 +23,7 @@ public class TakeOnRent extends Fragment {
     private GridView gridTools;
     private RecyclerView recyclerView;
     ArrayList<TakeOnRentModel> rentModelArrayList;
-    private RentAdapter rentAdapter;
+    private RentMenuAdapter rentMenuAdapter;
 
     public static TakeOnRent newInstance(String param1, String param2) {
         TakeOnRent fragment = new TakeOnRent();
@@ -35,7 +37,6 @@ public class TakeOnRent extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -61,9 +62,12 @@ public class TakeOnRent extends Fragment {
 
 
         gridTools = view.findViewById(R.id.gridTools);
-        rentAdapter = new RentAdapter(rentModelArrayList, getContext());
-        gridTools.setAdapter(rentAdapter);
-        rentAdapter.notifyDataSetChanged();
+        gridTools.setOnItemClickListener((adapterView, view1, i, l) -> {
+            startActivity(new Intent(getActivity(), rented_product_list.class));
+        });
+        rentMenuAdapter = new RentMenuAdapter(rentModelArrayList, getContext());
+        gridTools.setAdapter(rentMenuAdapter);
+        rentMenuAdapter.notifyDataSetChanged();
         return view;
 
     }
