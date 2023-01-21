@@ -32,7 +32,7 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.CropViewHolder
     @NonNull
     @Override
     public CropViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.element_style, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.mandi_price_item, parent, false);
         return new CropAdapter.CropViewHolder(view);
     }
 

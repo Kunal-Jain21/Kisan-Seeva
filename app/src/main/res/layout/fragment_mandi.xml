@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/element_style" >
+            tools:listitem="@layout/mandi_price_item" >
         </androidx.recyclerview.widget.RecyclerView>
 
 
