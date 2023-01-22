@@ -5,6 +5,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.Random;
 
 public class Utility {
 
@@ -25,6 +29,11 @@ public class Utility {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         return FirebaseFirestore.getInstance().collection("User")
                 .document(currentUser.getUid());
+    }
+
+    public static StorageReference getStorageReferenceForImage() {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Image1" + new Random().nextInt(50));
+        return storageReference;
     }
 
 }
