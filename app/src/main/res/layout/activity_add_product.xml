@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Renting.GiveOnRent.addProduct">
+    tools:context=".Renting.GiveOnRent.AddProduct">
 
     <LinearLayout
         android:id="@+id/image_view"
@@ -33,8 +33,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/gallery"
+        app:layout_constraintEnd_toEndOf="@id/image_view"
+        app:layout_constraintBottom_toBottomOf="@id/image_view" />
+
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_view" />
+        app:layout_constraintTop_toBottomOf="@id/image_view"
+        />
 
     <EditText
         android:id="@+id/machine_name"
@@ -42,7 +54,7 @@
         android:layout_height="wrap_content"
         android:hint="Machine Name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_but" />
+        app:layout_constraintTop_toBottomOf="@id/category_spinner" />
 
     <EditText
         android:id="@+id/machine_desc"

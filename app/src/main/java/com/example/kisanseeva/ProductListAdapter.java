@@ -12,16 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kisanseeva.Renting.GiveOnRent.productModel;
+import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
 
 import java.util.ArrayList;
 
-public class productListAdapter extends RecyclerView.Adapter<productListAdapter.productAdapter> {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.productAdapter> {
 
     Context context;
-    ArrayList<productModel> produtList;
+    ArrayList<ProductModel> produtList;
 
-    public productListAdapter(Context context, ArrayList<productModel> produtList) {
+    public ProductListAdapter(Context context, ArrayList<ProductModel> produtList) {
         this.context = context;
         this.produtList = produtList;
     }
@@ -36,7 +36,7 @@ public class productListAdapter extends RecyclerView.Adapter<productListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull productAdapter holder, int position) {
-        productModel curr = produtList.get(position);
+        ProductModel curr = produtList.get(position);
         holder.prod_name.setText(curr.getProd_name());
         holder.prod_desc.setText(curr.getProd_desc());
         holder.prod_price.setText(String.valueOf(curr.getProd_price()));

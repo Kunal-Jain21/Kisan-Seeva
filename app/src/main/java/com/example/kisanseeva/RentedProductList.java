@@ -6,22 +6,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.example.kisanseeva.Renting.GiveOnRent.productModel;
+import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
 
 import java.util.ArrayList;
 
-public class rented_product_list extends AppCompatActivity {
+public class RentedProductList extends AppCompatActivity {
 
     RecyclerView recycle;
-    productListAdapter productListAdapter;
+    ProductListAdapter productListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rented_product_list);
 
-        ArrayList<productModel> rentedProduct = new ArrayList<>();
-        productModel temp = new productModel();
+        ArrayList<ProductModel> rentedProduct = new ArrayList<>();
+        ProductModel temp = new ProductModel();
         temp.setProd_id("1");
         temp.setProd_name("Tractor");
         temp.setProd_desc("rent");
@@ -32,7 +32,7 @@ public class rented_product_list extends AppCompatActivity {
         rentedProduct.add(temp);
 
         recycle = findViewById(R.id.rented_product_list);
-        productListAdapter = new productListAdapter(this, rentedProduct);
+        productListAdapter = new ProductListAdapter(this, rentedProduct);
         recycle.setLayoutManager(new LinearLayoutManager(this));
         recycle.setAdapter(productListAdapter);
         productListAdapter.notifyDataSetChanged();

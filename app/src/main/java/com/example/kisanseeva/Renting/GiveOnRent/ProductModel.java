@@ -1,10 +1,10 @@
 package com.example.kisanseeva.Renting.GiveOnRent;
 
-public class productModel {
+public class ProductModel {
     private String prod_id, prod_name, prod_desc, prod_img;
     private int prod_price;
 
-    public productModel() {
+    public ProductModel() {
     }
 
     public String getProd_id() {

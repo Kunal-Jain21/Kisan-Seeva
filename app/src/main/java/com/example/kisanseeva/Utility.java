@@ -21,8 +21,7 @@ public class Utility {
 
     // getting list of product according to category
     public static CollectionReference getCollectionReferenceForRentedProduct() {
-        return FirebaseFirestore.getInstance().collection("Product")
-                .document("1").collection("rentedTractor");
+        return FirebaseFirestore.getInstance().collection("Product");
     }
 
     // To get user's data

@@ -1,7 +1,6 @@
 package com.example.kisanseeva.Renting.GiveOnRent;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,11 @@ import com.example.kisanseeva.R;
 
 import java.util.ArrayList;
 
-public class productListAdapter extends RecyclerView.Adapter<productListAdapter.productAdapter> {
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.productAdapter> {
     Context context;
-    ArrayList<productModel> rentedProduct;
+    ArrayList<ProductModel> rentedProduct;
 
-    public productListAdapter(Context context, ArrayList<productModel> rentedProduct) {
+    public ProductListAdapter(Context context, ArrayList<ProductModel> rentedProduct) {
         this.context = context;
         this.rentedProduct = rentedProduct;
     }
@@ -34,7 +33,7 @@ public class productListAdapter extends RecyclerView.Adapter<productListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull productAdapter holder, int position) {
-        productModel curr = rentedProduct.get(position);
+        ProductModel curr = rentedProduct.get(position);
         holder.prod_name.setText(curr.getProd_name());
         holder.prod_desc.setText(curr.getProd_desc());
         holder.prod_price.setText(String.valueOf(curr.getProd_price()));

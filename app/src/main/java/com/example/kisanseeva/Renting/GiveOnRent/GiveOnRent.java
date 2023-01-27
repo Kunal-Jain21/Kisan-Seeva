@@ -3,29 +3,29 @@ package com.example.kisanseeva.Renting.GiveOnRent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.kisanseeva.R;
 import com.example.kisanseeva.Utility;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GiveOnRent extends Fragment {
 
     FloatingActionButton fab;
     RecyclerView recyclerView;
-    ArrayList<productModel> rentedProduct;
-    productListAdapter productListAdapter;
+    ArrayList<ProductModel> rentedProduct;
+    ProductListAdapter productListAdapter;
 
     public static GiveOnRent newInstance(String param1, String param2) {
         GiveOnRent fragment = new GiveOnRent();
@@ -51,53 +51,57 @@ public class GiveOnRent extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), addProduct.class));
+                startActivity(new Intent(getActivity(), AddProduct.class));
             }
         });
 
         rentedProduct = new ArrayList<>();
-//        setData();
-        productModel temp = new productModel();
-        temp.setProd_id("1");
-        temp.setProd_name("Tractor");
-        temp.setProd_desc("rent");
-        temp.setProd_price(250);
-        temp.setProd_img("https://firebasestorage.googleapis.com/v0/b/kisan-seeva-6c8fd.appspot.com/o/Image137?alt=media&token=f22965bd-1fc0-4425-919b-95abdd6e43e2");
-        rentedProduct.add(temp);
-        rentedProduct.add(temp);
-        rentedProduct.add(temp);
         // Recycler View
-
-        productListAdapter = new productListAdapter(getContext(), rentedProduct);
-        recyclerView.setAdapter(productListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        setRecyclerView();
         return view;
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        setData();
-//    }
+    private void setRecyclerView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        productListAdapter = new ProductListAdapter(getContext(), rentedProduct);
+        recyclerView.setAdapter(productListAdapter);
+    }
 
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         setData();
     }
 
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        setData();
+//    }
+
     private void setData() {
         rentedProduct.clear();
-        Utility.getDocumentReferenceOfUser().collection("productRented").
-                get().addOnSuccessListener(queryDocumentSnapshots -> {
-            if (queryDocumentSnapshots.isEmpty()) {
-                return;
-            }
-            else {
-                rentedProduct.addAll(queryDocumentSnapshots.toObjects(productModel.class));
-                productListAdapter.notifyDataSetChanged();
-            }
-        });
+
+        Utility.getDocumentReferenceOfUser().collection("my_product").get()
+                .addOnSuccessListener(documentSnapshots -> {
+
+                    for (DocumentSnapshot documentSnapshot: documentSnapshots.getDocuments()) {
+                        String id = documentSnapshot.get("prodId").toString();
+                        Utility.getCollectionReferenceForRentedProduct().document(id)
+                                .get().addOnSuccessListener(documentSnapshot1 -> {
+                            ProductModel curr = documentSnapshot1.toObject(ProductModel.class);
+                            ProductModel sample = new ProductModel();
+                            sample.setProd_name(curr.getProd_name());
+                            sample.setProd_price(curr.getProd_price());
+                            sample.setProd_desc(curr.getProd_desc());
+                            sample.setProd_img(curr.getProd_img());
+                            Log.v("testing", curr.getProd_name());
+                            rentedProduct.add(sample);
+                            productListAdapter.notifyDataSetChanged();
+                                });
+                    }
+                });
     }
 }

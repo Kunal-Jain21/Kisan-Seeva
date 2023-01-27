@@ -1,6 +1,5 @@
 package com.example.kisanseeva.Renting.TakeOnRent;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,13 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kisanseeva.R;
-import com.example.kisanseeva.rented_product_list;
+import com.example.kisanseeva.RentedProductList;
 
 import java.util.ArrayList;
 
@@ -65,7 +63,8 @@ public class TakeOnRent extends Fragment {
 
         gridTools = view.findViewById(R.id.gridTools);
         gridTools.setOnItemClickListener((adapterView, view1, i, l) -> {
-            startActivity(new Intent(getActivity(), rented_product_list.class));
+            rentModelArrayList.get(i).getEquipment_name();
+            startActivity(new Intent(getActivity(), RentedProductList.class));
         });
         rentMenuAdapter = new RentMenuAdapter(rentModelArrayList, getContext());
         gridTools.setAdapter(rentMenuAdapter);
