@@ -1,6 +1,7 @@
 package com.example.kisanseeva;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class productListAdapter extends RecyclerView.Adapter<productListAdapter.
         holder.prod_name.setText(curr.getProd_name());
         holder.prod_desc.setText(curr.getProd_desc());
         holder.prod_price.setText(String.valueOf(curr.getProd_price()));
-        holder.product_img.setImageResource(curr.getProd_img());
+        holder.product_img.setImageURI(Uri.parse(curr.getProd_img()));
     }
 
     @Override

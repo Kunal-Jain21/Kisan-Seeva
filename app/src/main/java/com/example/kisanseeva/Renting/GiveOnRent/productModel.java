@@ -1,15 +1,10 @@
 package com.example.kisanseeva.Renting.GiveOnRent;
 
 public class productModel {
-    private String prod_id, prod_name, prod_desc;
-    private int prod_price, prod_img;
+    private String prod_id, prod_name, prod_desc, prod_img;
+    private int prod_price;
 
-    public productModel(String prod_id, String prod_name, String prod_desc, int prod_price, int prod_img) {
-        this.prod_id = prod_id;
-        this.prod_name = prod_name;
-        this.prod_desc = prod_desc;
-        this.prod_price = prod_price;
-        this.prod_img = prod_img;
+    public productModel() {
     }
 
     public String getProd_id() {
@@ -44,11 +39,11 @@ public class productModel {
         this.prod_price = prod_price;
     }
 
-    public int getProd_img() {
+    public String getProd_img() {
         return prod_img;
     }
 
-    public void setProd_img(int prod_img) {
+    public void setProd_img(String prod_img) {
         this.prod_img = prod_img;
     }
 }

@@ -20,6 +20,9 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class addProduct extends AppCompatActivity {
 
     private EditText nameEditText,descEditText,priceEditText;
@@ -70,23 +73,40 @@ public class addProduct extends AppCompatActivity {
 
         if (validateData(prod_name, prod_desc, prod_price)) {
             // If entered data is correct
-            productModel productModel = new productModel("1", prod_name, "product", Integer.parseInt(prod_price), R.drawable.leaf_blower);
-            addProductToFirebase(productModel);
+            productModel currProduct = new productModel();
+            currProduct.setProd_name(prod_name);
+            currProduct.setProd_desc(prod_desc);
+            currProduct.setProd_price(Integer.parseInt(prod_price));
+            addProductToFirebase(currProduct);
         }
     }
 
-    private void addProductToFirebase(productModel productModel) {
+    private void addProductToFirebase(productModel currProduct) {
         StorageReference storageReference = Utility.getStorageReferenceForImage();
 
+        // adding image to storage
         storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
             storageReference.getDownloadUrl().addOnSuccessListener(uri1 -> {
-                DocumentReference documentReference = Utility.getCollectionReferenceForProduct().document();
-//                productModel.setProd_img(uri1);
-                productModel.setProd_id(documentReference.getId());
-                    documentReference.set(productModel).addOnCompleteListener(task -> {
+
+                DocumentReference rentedProductDocument = Utility.getCollectionReferenceForRentedProduct().document();
+                currProduct.setProd_img(uri1.toString());
+                currProduct.setProd_id(rentedProductDocument.getId());
+                    // adding product to db
+                    rentedProductDocument.set(currProduct).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, "Product added", Toast.LENGTH_SHORT).show();
-                            finish();
+                            Log.v("addProduct", "Line 90");
+                            DocumentReference productDocument = Utility.getDocumentReferenceOfUser().collection("productRented").document();
+
+                            productDocument.set(currProduct).addOnCompleteListener(task1 -> {
+                                if (task.isSuccessful()) {
+                                    Log.v("addProduct", "Line 94");
+                                    Toast.makeText(this, "Product added", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                                else {
+                                    Toast.makeText(this, "Error in adding product to list", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                         else {
                             Toast.makeText(this, "Error in adding product", Toast.LENGTH_SHORT).show();

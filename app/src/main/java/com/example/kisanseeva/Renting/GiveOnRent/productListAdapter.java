@@ -1,7 +1,7 @@
 package com.example.kisanseeva.Renting.GiveOnRent;
 
 import android.content.Context;
-import android.util.Log;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.kisanseeva.R;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class productListAdapter extends RecyclerView.Adapter<productListAdapter.productAdapter> {
     Context context;
@@ -38,8 +38,9 @@ public class productListAdapter extends RecyclerView.Adapter<productListAdapter.
         holder.prod_name.setText(curr.getProd_name());
         holder.prod_desc.setText(curr.getProd_desc());
         holder.prod_price.setText(String.valueOf(curr.getProd_price()));
-        Log.v("checking", "Reached inside onBindViewHolder");
-        holder.prod_img.setImageResource(curr.getProd_img());
+        Glide.with(context)
+                        .load(curr.getProd_img())
+                                .into(holder.prod_img);
     }
 
     @Override
@@ -52,7 +53,6 @@ public class productListAdapter extends RecyclerView.Adapter<productListAdapter.
         TextView prod_name, prod_price, prod_desc;
         public productAdapter(@NonNull View view) {
             super(view);
-            Log.v("checking", "Reached inside viewholder");
             prod_img = view.findViewById(R.id.prod_img);
             prod_name = view.findViewById(R.id.prod_name);
             prod_price = view.findViewById(R.id.prod_price);

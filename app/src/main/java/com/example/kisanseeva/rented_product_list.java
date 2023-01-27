@@ -21,12 +21,15 @@ public class rented_product_list extends AppCompatActivity {
         setContentView(R.layout.activity_rented_product_list);
 
         ArrayList<productModel> rentedProduct = new ArrayList<>();
-        rentedProduct.add(new productModel("1", "Tractor", "rent", 250, R.drawable.leaf_blower));
-        rentedProduct.add(new productModel("2", "Tractor", "rent", 250, R.drawable.leaf_blower));
-        rentedProduct.add(new productModel("3", "Tractor", "rent", 250, R.drawable.leaf_blower));
-        rentedProduct.add(new productModel("1", "Tractor", "rent", 250, R.drawable.leaf_blower));
-        rentedProduct.add(new productModel("2", "Tractor", "rent", 250, R.drawable.leaf_blower));
-        rentedProduct.add(new productModel("3", "Tractor", "rent", 250, R.drawable.leaf_blower));
+        productModel temp = new productModel();
+        temp.setProd_id("1");
+        temp.setProd_name("Tractor");
+        temp.setProd_desc("rent");
+        temp.setProd_price(250);
+        temp.setProd_img("https://firebasestorage.googleapis.com/v0/b/kisan-seeva-6c8fd.appspot.com/o/Image137?alt=media&token=f22965bd-1fc0-4425-919b-95abdd6e43e2");
+        rentedProduct.add(temp);
+        rentedProduct.add(temp);
+        rentedProduct.add(temp);
 
         recycle = findViewById(R.id.rented_product_list);
         productListAdapter = new productListAdapter(this, rentedProduct);
