@@ -1,7 +1,23 @@
 package com.example.kisanseeva.Renting.GiveOnRent;
 
 public class ProductModel {
-    private String prod_id, prod_name, prod_desc, prod_img, category, giver_id;
+    private String prod_id;
+    private String prod_name;
+    private String prod_desc;
+    private String prod_img;
+    private String category;
+    private String giver_id;
+
+    public String getPersonal_prod_id() {
+        return personal_prod_id;
+    }
+
+    public void setPersonal_prod_id(String personal_prod_id) {
+        this.personal_prod_id = personal_prod_id;
+    }
+
+    private String personal_prod_id;
+
     private int prod_price;
 
     public String getGiver_id() {

@@ -4,21 +4,12 @@ import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +19,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.kisanseeva.ml.LiteModelPlantDiseaseDefault1;
 
 import org.tensorflow.lite.DataType;
@@ -36,14 +31,12 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     Button camera, gallery;
     ImageView imageView;
     TextView result;
     int imageSize = 224;
-
 
 
     @Override
@@ -56,16 +49,16 @@ public class HomeFragment extends Fragment {
         result = view.findViewById(R.id.result);
         imageView = view.findViewById(R.id.imageView);
 
-        camera.setOnClickListener(new View.OnClickListener(){
+        camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 //                    Log.v("no permission", "Camera not ready");
 //                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
 //                } else {
-                    Log.v("no permission2", "Camera not ready2");
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, 3);
+                Log.v("no permission2", "Camera not ready2");
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 3);
 //                }
             }
         });
@@ -84,7 +77,7 @@ public class HomeFragment extends Fragment {
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 100) {
-            if(permissions[0].equals(Manifest.permission.CAMERA)
+            if (permissions[0].equals(Manifest.permission.CAMERA)
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             }

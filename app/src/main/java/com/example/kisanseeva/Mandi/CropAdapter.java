@@ -24,7 +24,7 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.CropViewHolder
         this.context = context;
     }
 
-    public void setFilteredList(List<Crop> filteredList){
+    public void setFilteredList(List<Crop> filteredList) {
         this.cropArrayList = (ArrayList<Crop>) filteredList;
         notifyDataSetChanged();
     }
@@ -52,6 +52,7 @@ public class CropAdapter extends RecyclerView.Adapter<CropAdapter.CropViewHolder
 
     public class CropViewHolder extends RecyclerView.ViewHolder {
         private TextView cropName, price, state, date;
+
         public CropViewHolder(@NonNull View itemView) {
             super(itemView);
             cropName = itemView.findViewById(R.id.Vegetable);

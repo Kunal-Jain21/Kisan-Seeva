@@ -1,8 +1,5 @@
 package com.example.kisanseeva;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +10,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,8 +26,9 @@ import java.util.concurrent.TimeUnit;
 
 public class VerifyOTP extends AppCompatActivity {
 
-    private EditText inputCode1,inputCode2,inputCode3,inputCode4,inputCode5,inputCode6;
+    private EditText inputCode1, inputCode2, inputCode3, inputCode4, inputCode5, inputCode6;
     private String verificationId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class VerifyOTP extends AppCompatActivity {
 
         TextView textMobile = findViewById(R.id.textMobile);
         textMobile.setText(String.format(
-                "+91-%s",getIntent().getStringExtra("mobile")
+                "+91-%s", getIntent().getStringExtra("mobile")
         ));
 
         inputCode1 = findViewById(R.id.inputCode1);
@@ -53,13 +54,13 @@ public class VerifyOTP extends AppCompatActivity {
         buttonVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inputCode1.getText().toString().trim().isEmpty()||
-                        inputCode2.getText().toString().trim().isEmpty()||
-                        inputCode3.getText().toString().trim().isEmpty()||
-                        inputCode4.getText().toString().trim().isEmpty()||
-                        inputCode5.getText().toString().trim().isEmpty()||
-                        inputCode6.getText().toString().trim().isEmpty()){
-                    Toast.makeText(VerifyOTP.this,"Please enter a valid OTP",Toast.LENGTH_SHORT).show();
+                if (inputCode1.getText().toString().trim().isEmpty() ||
+                        inputCode2.getText().toString().trim().isEmpty() ||
+                        inputCode3.getText().toString().trim().isEmpty() ||
+                        inputCode4.getText().toString().trim().isEmpty() ||
+                        inputCode5.getText().toString().trim().isEmpty() ||
+                        inputCode6.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(VerifyOTP.this, "Please enter a valid OTP", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -70,11 +71,11 @@ public class VerifyOTP extends AppCompatActivity {
                         inputCode5.getText().toString() +
                         inputCode6.getText().toString();
 
-                if (verificationId != null){
+                if (verificationId != null) {
                     progressBar.setVisibility(View.VISIBLE);
                     buttonVerify.setVisibility(View.INVISIBLE);
                     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(
-                            verificationId,code
+                            verificationId, code
                     );
                     FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -82,12 +83,12 @@ public class VerifyOTP extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     progressBar.setVisibility(View.GONE);
                                     buttonVerify.setVisibility(View.VISIBLE);
-                                    if (task.isSuccessful()){
-                                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                    if (task.isSuccessful()) {
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                         intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
-                                    }else{
-                                        Toast.makeText(VerifyOTP.this,"Enter valid verification code",Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(VerifyOTP.this, "Enter valid verification code", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -96,7 +97,7 @@ public class VerifyOTP extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                                    "+91"+getIntent().getStringExtra("mobile"),
+                                    "+91" + getIntent().getStringExtra("mobile"),
                                     60,
                                     TimeUnit.SECONDS,
                                     VerifyOTP.this,
@@ -107,13 +108,13 @@ public class VerifyOTP extends AppCompatActivity {
 
                                         @Override
                                         public void onVerificationFailed(@NonNull FirebaseException e) {
-                                            Toast.makeText(VerifyOTP.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(VerifyOTP.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
 
                                         @Override
                                         public void onCodeSent(@NonNull String newVerificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                             verificationId = newVerificationId;
-                                            Toast.makeText(VerifyOTP.this,"OTP Sent",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(VerifyOTP.this, "OTP Sent", Toast.LENGTH_SHORT).show();
                                         }
 
                                     }
@@ -127,7 +128,7 @@ public class VerifyOTP extends AppCompatActivity {
         setupOTPInputs();
     }
 
-    private void setupOTPInputs(){
+    private void setupOTPInputs() {
         inputCode1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -136,7 +137,7 @@ public class VerifyOTP extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!charSequence.toString().trim().isEmpty()){
+                if (!charSequence.toString().trim().isEmpty()) {
                     inputCode2.requestFocus();
                 }
             }
@@ -154,7 +155,7 @@ public class VerifyOTP extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!charSequence.toString().trim().isEmpty()){
+                if (!charSequence.toString().trim().isEmpty()) {
                     inputCode3.requestFocus();
                 }
             }
@@ -172,7 +173,7 @@ public class VerifyOTP extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!charSequence.toString().trim().isEmpty()){
+                if (!charSequence.toString().trim().isEmpty()) {
                     inputCode4.requestFocus();
                 }
             }
@@ -190,7 +191,7 @@ public class VerifyOTP extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!charSequence.toString().trim().isEmpty()){
+                if (!charSequence.toString().trim().isEmpty()) {
                     inputCode5.requestFocus();
                 }
             }
@@ -208,7 +209,7 @@ public class VerifyOTP extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!charSequence.toString().trim().isEmpty()){
+                if (!charSequence.toString().trim().isEmpty()) {
                     inputCode6.requestFocus();
                 }
             }

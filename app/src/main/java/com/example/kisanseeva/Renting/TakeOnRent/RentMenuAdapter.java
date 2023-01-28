@@ -40,8 +40,8 @@ public class RentMenuAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        if (view == null){
-            view = LayoutInflater.from(context).inflate(R.layout.grid_member,parent,false);
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.grid_member, parent, false);
         }
         ImageView imageView = view.findViewById(R.id.equipmentImg);
         TextView textView = view.findViewById(R.id.equipmentName);

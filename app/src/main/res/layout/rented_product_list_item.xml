@@ -41,4 +41,14 @@
 
     </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_weight="0.3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/add_img"
+            android:scaleType="centerCrop"
+            android:contentDescription="Delete button"
+            android:background="#FFFFFF"/>
+
 </LinearLayout>

@@ -1,4 +1,5 @@
 package com.example.kisanseeva.Mandi;
+
 import java.util.ArrayList;
 
 class Field {
@@ -7,7 +8,7 @@ class Field {
     private String type;
 }
 
-class Bucket{
+class Bucket {
     String field;
     String index;
     String type;

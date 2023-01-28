@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class AddProduct extends AppCompatActivity {
 
-    private EditText nameEditText,descEditText,priceEditText;
+    private EditText nameEditText, descEditText, priceEditText;
     private ImageView prod_img;
     ImageButton img_uploader;
     String selectedCategory;
@@ -52,7 +52,7 @@ public class AddProduct extends AppCompatActivity {
         category_spinner = findViewById(R.id.category_spinner);
 
         ArrayList<String> category = new ArrayList<String>(
-            Arrays.asList("Please Select a Category", "Tractor", "Leaf Blower", "Motor")
+                Arrays.asList("Please Select a Category", "Tractor", "Leaf Blower", "Motor")
         );
 
         category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -106,7 +106,7 @@ public class AddProduct extends AppCompatActivity {
             return false;
         }
         if (selectedCategory.equals("Please Select a Category")) {
-            ((TextView)category_spinner.getSelectedView()).setError("Select a Category");
+            ((TextView) category_spinner.getSelectedView()).setError("Select a Category");
             return false;
         }
         return true;
@@ -114,33 +114,33 @@ public class AddProduct extends AppCompatActivity {
 
     private void addProductToFirebase(ProductModel currProduct) {
         StorageReference storageReference = Utility.getStorageReferenceForImage();
-
         // adding image to storage
         storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
             storageReference.getDownloadUrl().addOnSuccessListener(uri1 -> {
                 // adding product to product Table
                 DocumentReference rentedProductDocument = Utility.getCollectionReferenceForRentedProduct().document();
+                DocumentReference productDocument = Utility.getDocumentReferenceOfUser().collection("my_product").document();
+                currProduct.setPersonal_prod_id(productDocument.getId());
                 currProduct.setGiver_id(Utility.getCurrentUser().getUid());
                 currProduct.setProd_img(uri1.toString());
                 currProduct.setProd_id(rentedProductDocument.getId());
-                    // adding product id is personal list
-                    rentedProductDocument.set(currProduct).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentReference productDocument = Utility.getDocumentReferenceOfUser().collection("my_product").document();
-                            productDocument.set(new HashMap<String, String>(){{put("prodId", rentedProductDocument.getId());}}).addOnCompleteListener(task1 -> {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(this, "Product added", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }
-                                else {
-                                    Toast.makeText(this, "Error in adding product to list", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                        else {
-                            Toast.makeText(this, "Error in adding product", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                // adding product id is personal list
+                rentedProductDocument.set(currProduct).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        productDocument.set(new HashMap<String, String>() {{
+                            put("prodId", rentedProductDocument.getId());
+                        }}).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                Toast.makeText(this, "Product added", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Toast.makeText(this, "Error in adding product to list", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(this, "Error in adding product", Toast.LENGTH_SHORT).show();
+                    }
+                });
             });
         });
     }
@@ -154,7 +154,9 @@ public class AddProduct extends AppCompatActivity {
                         //                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
                         //                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                         .start(10);
-            };
+            }
+
+            ;
         });
     }
 

@@ -1,12 +1,11 @@
 package com.example.kisanseeva.Renting.GiveOnRent;
 
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,11 +16,9 @@ import com.example.kisanseeva.Utility;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-
 import java.util.ArrayList;
 
-public class GiveOnRent extends Fragment {
-
+public class GiveOnRent extends Fragment implements OnClickListForDelete{
     FloatingActionButton fab;
     RecyclerView recyclerView;
     ArrayList<ProductModel> rentedProduct;
@@ -43,7 +40,7 @@ public class GiveOnRent extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_give_on_rent, container, false);
+        View view = inflater.inflate(R.layout.fragment_give_on_rent, container, false);
         fab = view.findViewById(R.id.fab);
         recyclerView = view.findViewById(R.id.rented_product_list);
 
@@ -63,7 +60,7 @@ public class GiveOnRent extends Fragment {
 
     private void setRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        productListAdapter = new ProductListAdapter(getContext(), rentedProduct);
+        productListAdapter = new ProductListAdapter(getContext(), rentedProduct,this);
         recyclerView.setAdapter(productListAdapter);
     }
 
@@ -87,20 +84,31 @@ public class GiveOnRent extends Fragment {
         Utility.getDocumentReferenceOfUser().collection("my_product").get()
                 .addOnSuccessListener(documentSnapshots -> {
 
-                    for (DocumentSnapshot documentSnapshot: documentSnapshots.getDocuments()) {
+                    for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
                         String id = documentSnapshot.get("prodId").toString();
                         Utility.getCollectionReferenceForRentedProduct().document(id)
                                 .get().addOnSuccessListener(documentSnapshot1 -> {
-                            ProductModel curr = documentSnapshot1.toObject(ProductModel.class);
-//                            ProductModel sample = new ProductModel();
-//                            sample.setProd_name(curr.getProd_name());
-//                            sample.setProd_price(curr.getProd_price());
-//                            sample.setProd_desc(curr.getProd_desc());
-//                            sample.setProd_img(curr.getProd_img());
-                            rentedProduct.add(curr);
-                            productListAdapter.notifyDataSetChanged();
+                                    ProductModel curr = documentSnapshot1.toObject(ProductModel.class);
+                                    rentedProduct.add(curr);
+                                    productListAdapter.notifyDataSetChanged();
                                 });
                     }
                 });
+    }
+
+
+    @Override
+    public void deleteItem(String personal_prod_id, String prodId) {
+        Utility.getCollectionReferenceForRentedProduct().document(prodId).delete().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                Utility.getDocumentReferenceOfUser().collection("my_product").document(personal_prod_id).delete().addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()){
+                        Toast.makeText(requireActivity(),"Product Deleted Successfully",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else {
+                Toast.makeText(requireActivity(),"Error while deleting product",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

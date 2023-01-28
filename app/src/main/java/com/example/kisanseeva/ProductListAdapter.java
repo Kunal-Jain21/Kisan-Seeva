@@ -20,11 +20,11 @@ import java.util.ArrayList;
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.productAdapter> {
 
     Context context;
-    ArrayList<ProductModel> produtList;
+    ArrayList<ProductModel> productList;
 
-    public ProductListAdapter(Context context, ArrayList<ProductModel> produtList) {
+    public ProductListAdapter(Context context, ArrayList<ProductModel> productList) {
         this.context = context;
-        this.produtList = produtList;
+        this.productList = productList;
     }
 
     @NonNull
@@ -37,25 +37,26 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull productAdapter holder, int position) {
-        ProductModel curr = produtList.get(position);
+        ProductModel curr = productList.get(position);
         holder.prod_name.setText(curr.getProd_name());
         holder.prod_desc.setText(curr.getProd_desc());
         holder.prod_price.setText(String.valueOf(curr.getProd_price()));
         Glide.with(context)
-                        .load(curr.getProd_img())
-                                .into(holder.product_img);
+                .load(curr.getProd_img())
+                .into(holder.product_img);
         holder.product_img.setImageURI(Uri.parse(curr.getProd_img()));
     }
 
     @Override
     public int getItemCount() {
-        return produtList.size();
+        return productList.size();
     }
 
     public class productAdapter extends RecyclerView.ViewHolder {
         ImageView product_img;
         TextView prod_name, prod_desc, prod_price;
         CardView product_item;
+
         public productAdapter(@NonNull View view) {
             super(view);
             product_img = view.findViewById(R.id.product_img);

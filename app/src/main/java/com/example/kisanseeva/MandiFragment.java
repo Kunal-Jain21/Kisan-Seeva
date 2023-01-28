@@ -70,7 +70,7 @@ public class MandiFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu,menu);
+        inflater.inflate(R.menu.menu, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Type here to search");
@@ -92,7 +92,7 @@ public class MandiFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_setting){
+        if (id == R.id.action_setting) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, new Settings()).addToBackStack("Mandi Page");
@@ -104,19 +104,19 @@ public class MandiFragment extends Fragment {
 
     private void filterList(String s) {
         List<Crop> filteredList = new ArrayList<>();
-        for (Crop crop : cropArrayList){
-            if (crop.getState().toLowerCase().contains(s.toLowerCase())){
+        for (Crop crop : cropArrayList) {
+            if (crop.getState().toLowerCase().contains(s.toLowerCase())) {
                 filteredList.add(crop);
             }
         }
-        if (filteredList.isEmpty()){
-            Toast.makeText(getContext(),"No data found",Toast.LENGTH_SHORT).show();
-        }else{
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getContext(), "No data found", Toast.LENGTH_SHORT).show();
+        } else {
             cropAdapter.setFilteredList(filteredList);
         }
     }
 
-    public void getCrop(String cropName){
+    public void getCrop(String cropName) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String preferenceString = sharedPrefs.getString("select_state", "All");
 
@@ -125,8 +125,7 @@ public class MandiFragment extends Fragment {
         String url = "";
         if (Objects.equals(preferenceString, "All")) {
             url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001888f0650bd234d6d721fe6a18a68ae33&format=json&limit=10000";
-        }
-        else {
+        } else {
             url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001888f0650bd234d6d721fe6a18a68ae33&format=json&limit=10000&filters[state]=" + preferenceString;
         }
 
@@ -150,7 +149,7 @@ public class MandiFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CropModel> call, Throwable t) {
-                Toast.makeText(getContext(),"Fail to get crop",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Fail to get crop", Toast.LENGTH_SHORT).show();
             }
         });
     }
