@@ -5,36 +5,65 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.internal.Util;
 
 public class RentedProductList extends AppCompatActivity {
 
     RecyclerView recycle;
     ProductListAdapter productListAdapter;
+    private String equipmentName;
+    private ArrayList<ProductModel> rentedProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rented_product_list);
 
-        ArrayList<ProductModel> rentedProduct = new ArrayList<>();
-        ProductModel temp = new ProductModel();
-        temp.setProd_id("1");
-        temp.setProd_name("Tractor");
-        temp.setProd_desc("rent");
-        temp.setProd_price(250);
-        temp.setProd_img("https://firebasestorage.googleapis.com/v0/b/kisan-seeva-6c8fd.appspot.com/o/Image137?alt=media&token=f22965bd-1fc0-4425-919b-95abdd6e43e2");
-        rentedProduct.add(temp);
-        rentedProduct.add(temp);
-        rentedProduct.add(temp);
-
         recycle = findViewById(R.id.rented_product_list);
-        productListAdapter = new ProductListAdapter(this, rentedProduct);
+
+        equipmentName = getIntent().getStringExtra("equipmentName");
+        Log.v("EquipName", equipmentName);
+        rentedProduct = new ArrayList<>();
+
+        setRecyclerView();
+        Log.v("testing", "Line 37");
+//        getData();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.v("testing", "Line 44");
+        getData();
+    }
+
+    private void setRecyclerView() {
         recycle.setLayoutManager(new LinearLayoutManager(this));
+        productListAdapter = new ProductListAdapter(this, rentedProduct);
         recycle.setAdapter(productListAdapter);
-        productListAdapter.notifyDataSetChanged();
+    }
+
+    private void getData() {
+        Log.v("testing", "Line 55");
+        rentedProduct.clear();
+
+        Utility.getCollectionReferenceForRentedProduct().whereEqualTo("category", equipmentName)
+                .whereNotEqualTo("giver_id", Utility.getCurrentUser().getUid())
+                        .get().addOnSuccessListener(documentSnapshots -> {
+                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                                rentedProduct.add(documentSnapshot.toObject(ProductModel.class));
+                                productListAdapter.notifyDataSetChanged();
+                            }
+                });
     }
 }
