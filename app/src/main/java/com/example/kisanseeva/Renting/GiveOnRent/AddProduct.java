@@ -52,14 +52,13 @@ public class AddProduct extends AppCompatActivity {
         category_spinner = findViewById(R.id.category_spinner);
 
         ArrayList<String> category = new ArrayList<String>(
-            Arrays.asList("Please Select a Category", "Tractor", "Leaf BLower", "Motor")
+            Arrays.asList("Please Select a Category", "Tractor", "Leaf Blower", "Motor")
         );
 
         category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 selectedCategory = adapterView.getItemAtPosition(position).toString();
-
             }
 
             @Override
@@ -92,6 +91,7 @@ public class AddProduct extends AppCompatActivity {
             currProduct.setProd_name(prod_name);
             currProduct.setProd_desc(prod_desc);
             currProduct.setProd_price(Integer.parseInt(prod_price));
+            currProduct.setCategory(selectedCategory);
             addProductToFirebase(currProduct);
         }
     }
@@ -120,6 +120,7 @@ public class AddProduct extends AppCompatActivity {
             storageReference.getDownloadUrl().addOnSuccessListener(uri1 -> {
                 // adding product to product Table
                 DocumentReference rentedProductDocument = Utility.getCollectionReferenceForRentedProduct().document();
+                currProduct.setGiver_id(Utility.getCurrentUser().getUid());
                 currProduct.setProd_img(uri1.toString());
                 currProduct.setProd_id(rentedProductDocument.getId());
                     // adding product id is personal list

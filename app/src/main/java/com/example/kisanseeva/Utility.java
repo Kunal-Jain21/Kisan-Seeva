@@ -37,4 +37,8 @@ public class Utility {
         return storageReference;
     }
 
+    public static FirebaseUser getCurrentUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
+    }
+
 }

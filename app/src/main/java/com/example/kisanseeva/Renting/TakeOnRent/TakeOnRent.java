@@ -59,12 +59,11 @@ public class TakeOnRent extends Fragment {
         rentModelArrayList.add(new TakeOnRentModel("Chainsaw", R.drawable.ic_baseline_home_24));
         rentModelArrayList.add(new TakeOnRentModel("Dairy", R.drawable.ic_baseline_home_24));
 
-
-
         gridTools = view.findViewById(R.id.gridTools);
         gridTools.setOnItemClickListener((adapterView, view1, i, l) -> {
-            rentModelArrayList.get(i).getEquipment_name();
-            startActivity(new Intent(getActivity(), RentedProductList.class));
+            Intent intent = new Intent(requireActivity(), RentedProductList.class);
+            intent.putExtra("equipmentName", rentModelArrayList.get(i).getEquipment_name());
+            startActivity(intent);
         });
         rentMenuAdapter = new RentMenuAdapter(rentModelArrayList, getContext());
         gridTools.setAdapter(rentMenuAdapter);

@@ -2,22 +2,6 @@ package com.example.kisanseeva;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.kisanseeva.Mandi.Crop;
-import com.example.kisanseeva.Mandi.CropAdapter;
-import com.example.kisanseeva.Mandi.RetroFitAPI;
-import com.example.kisanseeva.Mandi.Settings;
-import com.example.kisanseeva.Mandi.cropModel;
-
-import androidx.annotation.NonNull;
-
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.kisanseeva.Mandi.Crop;
+import com.example.kisanseeva.Mandi.CropAdapter;
+import com.example.kisanseeva.Mandi.CropModel;
+import com.example.kisanseeva.Mandi.RetroFitAPI;
+import com.example.kisanseeva.Mandi.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,13 +132,13 @@ public class MandiFragment extends Fragment {
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(base_url).addConverterFactory(GsonConverterFactory.create()).build();
         RetroFitAPI retroFitAPI = retrofit.create(RetroFitAPI.class);
-        Call<cropModel> call;
+        Call<CropModel> call;
         call = retroFitAPI.getAllDetail(url);
         Log.v("Crop Failed", "Line 115");
-        call.enqueue(new Callback<cropModel>() {
+        call.enqueue(new Callback<CropModel>() {
             @Override
-            public void onResponse(Call<cropModel> call, Response<cropModel> response) {
-                cropModel cropModel = response.body();
+            public void onResponse(Call<CropModel> call, Response<CropModel> response) {
+                CropModel cropModel = response.body();
                 ArrayList<Crop> crop = cropModel.getRecords();
                 for (int i = 0; i < crop.size(); i++) {
                     cropArrayList.add(new Crop(crop.get(i).getState(),
@@ -151,7 +149,7 @@ public class MandiFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<cropModel> call, Throwable t) {
+            public void onFailure(Call<CropModel> call, Throwable t) {
                 Toast.makeText(getContext(),"Fail to get crop",Toast.LENGTH_SHORT).show();
             }
         });

@@ -92,13 +92,12 @@ public class GiveOnRent extends Fragment {
                         Utility.getCollectionReferenceForRentedProduct().document(id)
                                 .get().addOnSuccessListener(documentSnapshot1 -> {
                             ProductModel curr = documentSnapshot1.toObject(ProductModel.class);
-                            ProductModel sample = new ProductModel();
-                            sample.setProd_name(curr.getProd_name());
-                            sample.setProd_price(curr.getProd_price());
-                            sample.setProd_desc(curr.getProd_desc());
-                            sample.setProd_img(curr.getProd_img());
-                            Log.v("testing", curr.getProd_name());
-                            rentedProduct.add(sample);
+//                            ProductModel sample = new ProductModel();
+//                            sample.setProd_name(curr.getProd_name());
+//                            sample.setProd_price(curr.getProd_price());
+//                            sample.setProd_desc(curr.getProd_desc());
+//                            sample.setProd_img(curr.getProd_img());
+                            rentedProduct.add(curr);
                             productListAdapter.notifyDataSetChanged();
                                 });
                     }

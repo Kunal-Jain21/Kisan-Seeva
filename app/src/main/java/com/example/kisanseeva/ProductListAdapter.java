@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
 
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.prod_name.setText(curr.getProd_name());
         holder.prod_desc.setText(curr.getProd_desc());
         holder.prod_price.setText(String.valueOf(curr.getProd_price()));
+        Glide.with(context)
+                        .load(curr.getProd_img())
+                                .into(holder.product_img);
         holder.product_img.setImageURI(Uri.parse(curr.getProd_img()));
     }
 

@@ -6,7 +6,7 @@ import retrofit2.http.Url;
 
 public interface RetroFitAPI {
     @GET
-    Call<cropModel> getAllDetail(@Url String url);
+    Call<CropModel> getAllDetail(@Url String url);
 
 //    Call<Crop>
 }

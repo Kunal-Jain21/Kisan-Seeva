@@ -14,7 +14,7 @@ class Bucket{
 }
 // ----------------------------------------------
 
-public class cropModel {
+public class CropModel {
     private ArrayList<Crop> crops;
     private String created;
     private String updated;
@@ -53,7 +53,7 @@ public class cropModel {
         this.records = records;
     }
 
-    public cropModel(ArrayList<Crop> crops, String created, String updated, String created_date, String active, String index_name, String[] org, String org_type, String source, String title, String external_ws_url, String visualizable, ArrayList<Field> field, int external_ws, String catalog_uuid, ArrayList<String> sector, Bucket target_bucket, String desc, ArrayList<Crop> records, String message, String version, String status, String total, String count, String limit, String offset) {
+    public CropModel(ArrayList<Crop> crops, String created, String updated, String created_date, String active, String index_name, String[] org, String org_type, String source, String title, String external_ws_url, String visualizable, ArrayList<Field> field, int external_ws, String catalog_uuid, ArrayList<String> sector, Bucket target_bucket, String desc, ArrayList<Crop> records, String message, String version, String status, String total, String count, String limit, String offset) {
         this.crops = crops;
         this.created = created;
         this.updated = updated;
