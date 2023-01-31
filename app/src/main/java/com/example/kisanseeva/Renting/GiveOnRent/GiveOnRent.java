@@ -116,7 +116,9 @@ public class GiveOnRent extends Fragment implements productListener {
     }
 
     @Override
-    public void onItemCLick() {
-        startActivity(new Intent(requireActivity(), ProductRequestActivity.class));
+    public void onItemCLick(String prod_id) {
+        Intent intent = new Intent(requireActivity(), ProductRequestActivity.class);
+        intent.putExtra("prod_id", prod_id);
+        startActivity(intent);
     }
 }

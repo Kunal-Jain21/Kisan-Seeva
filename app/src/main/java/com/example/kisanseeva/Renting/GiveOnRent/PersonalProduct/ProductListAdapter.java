@@ -59,7 +59,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.productItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                productListener.onItemCLick(curr.getProd_id());
             }
         });
     }

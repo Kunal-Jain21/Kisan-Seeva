@@ -13,10 +13,10 @@ import java.util.Random;
 public class Utility {
 
     // For getting list of application for a product
-    static CollectionReference getCollectionReferenceForApplication(String id) {
+    public static CollectionReference getCollectionReferenceForApplication(String id) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         return FirebaseFirestore.getInstance().collection("Product")
-                .document(id).collection("Application");
+                .document(id).collection("requestApplication");
     }
 
     // getting list of product according to category
