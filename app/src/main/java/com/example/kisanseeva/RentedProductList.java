@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
 import com.google.firebase.firestore.CollectionReference;
@@ -24,13 +28,14 @@ public class RentedProductList extends AppCompatActivity {
     private String equipmentName;
     private ArrayList<ProductModel> rentedProduct;
 
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rented_product_list);
 
         recycle = findViewById(R.id.rented_product_list);
-
         equipmentName = getIntent().getStringExtra("equipmentName");
         Log.v("EquipName", equipmentName);
         rentedProduct = new ArrayList<>();
