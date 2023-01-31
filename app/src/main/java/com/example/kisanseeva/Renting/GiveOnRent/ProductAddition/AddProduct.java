@@ -1,4 +1,4 @@
-package com.example.kisanseeva.Renting.GiveOnRent;
+package com.example.kisanseeva.Renting.GiveOnRent.ProductAddition;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kisanseeva.R;
+import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
 import com.example.kisanseeva.Utility;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.firestore.DocumentReference;

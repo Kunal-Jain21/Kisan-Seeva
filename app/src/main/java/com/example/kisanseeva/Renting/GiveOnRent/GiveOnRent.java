@@ -11,14 +11,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.ProductRequestActivity;
 import com.example.kisanseeva.R;
+import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.ProductListAdapter;
+import com.example.kisanseeva.Renting.GiveOnRent.ProductAddition.AddProduct;
 import com.example.kisanseeva.Utility;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
-public class GiveOnRent extends Fragment implements OnClickListForDelete{
+public class GiveOnRent extends Fragment implements productListener {
     FloatingActionButton fab;
     RecyclerView recyclerView;
     ArrayList<ProductModel> rentedProduct;
@@ -110,5 +113,10 @@ public class GiveOnRent extends Fragment implements OnClickListForDelete{
                 Toast.makeText(requireActivity(),"Error while deleting product",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onItemCLick() {
+        startActivity(new Intent(requireActivity(), ProductRequestActivity.class));
     }
 }

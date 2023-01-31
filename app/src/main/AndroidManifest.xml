@@ -13,6 +13,13 @@
         android:theme="@style/Theme.KisanSeeva"
         tools:targetApi="31">
         <activity
+            android:name=".Renting.GiveOnRent.PersonalProduct.ProductRequestActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".VerifyOTP"
             android:exported="false">
             <meta-data
@@ -27,14 +34,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".RentedProductList"
+            android:name=".Renting.TakeOnRent.RentedProductList"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".Renting.GiveOnRent.AddProduct"
+            android:name=".Renting.GiveOnRent.ProductAddition.AddProduct"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

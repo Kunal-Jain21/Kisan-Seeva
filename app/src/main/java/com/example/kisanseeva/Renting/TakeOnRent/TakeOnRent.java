@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kisanseeva.R;
-import com.example.kisanseeva.RentedProductList;
 
 import java.util.ArrayList;
 

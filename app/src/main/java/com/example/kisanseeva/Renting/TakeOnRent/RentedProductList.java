@@ -1,25 +1,19 @@
-package com.example.kisanseeva;
+package com.example.kisanseeva.Renting.TakeOnRent;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
+import com.example.kisanseeva.R;
 import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
-import com.google.firebase.firestore.CollectionReference;
+import com.example.kisanseeva.Utility;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.internal.Util;
 
 public class RentedProductList extends AppCompatActivity {
 

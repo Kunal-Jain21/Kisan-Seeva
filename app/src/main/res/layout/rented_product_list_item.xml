@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:id="@+id/productItem"
     android:padding="10dp">
 
     <ImageView
@@ -46,7 +47,8 @@
             android:layout_weight="0.3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/add_img"
+            android:src="@drawable/delete"
+            android:padding="8sp"
             android:scaleType="centerCrop"
             android:contentDescription="Delete button"
             android:background="#FFFFFF"/>
