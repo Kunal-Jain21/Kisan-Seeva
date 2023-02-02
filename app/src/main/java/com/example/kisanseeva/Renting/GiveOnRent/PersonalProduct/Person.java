@@ -3,6 +3,7 @@ package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 public class Person {
     String name;
     int image;
+    Person(){}
 
     public Person(String name, int image) {
         this.name = name;

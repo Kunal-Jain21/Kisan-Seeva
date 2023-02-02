@@ -41,4 +41,8 @@ public class Utility {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
+    public static CollectionReference getCollectionReferenceForSentRequest(){
+        return getDocumentReferenceOfUser().collection("sentRequest");
+    }
+
 }

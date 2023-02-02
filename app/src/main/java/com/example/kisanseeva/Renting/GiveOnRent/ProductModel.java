@@ -7,6 +7,8 @@ public class ProductModel {
     private String prod_img;
     private String category;
     private String giver_id;
+    private String personal_prod_id;
+    private int prod_price;
 
     public String getPersonal_prod_id() {
         return personal_prod_id;
@@ -15,10 +17,6 @@ public class ProductModel {
     public void setPersonal_prod_id(String personal_prod_id) {
         this.personal_prod_id = personal_prod_id;
     }
-
-    private String personal_prod_id;
-
-    private int prod_price;
 
     public String getGiver_id() {
         return giver_id;

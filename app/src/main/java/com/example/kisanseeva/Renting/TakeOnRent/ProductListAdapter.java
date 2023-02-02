@@ -16,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.kisanseeva.R;
 import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
+import com.example.kisanseeva.Utility;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.productAdapter> {
 
@@ -51,11 +54,30 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"Clicked",Toast.LENGTH_SHORT).show();
+                DocumentReference applicationReference =Utility.getCollectionReferenceForRentedProduct()
+                        .document(curr.getProd_id()).collection("requestApplication").document();
+                applicationReference.set(new HashMap<String,Object>(){{
+                    put("requestUserId",Utility.getCurrentUser().getUid());
+                    put("isApproved",false);
+                }
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        DocumentReference sentRequestReference = Utility.getCollectionReferenceForSentRequest().document(applicationReference.getId());
+                        sentRequestReference.set(new HashMap<String,String>(){{
+                            put("productId",curr.getProd_id());
+                        }}).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()){
+                                Toast.makeText(context,"Success",Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(context,"Failure in adding sent request",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }else{
+                        Toast.makeText(context,"Failure in adding request application",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
-
-
     }
 
     @Override
