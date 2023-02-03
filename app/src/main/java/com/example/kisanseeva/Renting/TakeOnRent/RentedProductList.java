@@ -35,14 +35,12 @@ public class RentedProductList extends AppCompatActivity {
         rentedProduct = new ArrayList<>();
 
         setRecyclerView();
-        Log.v("testing", "Line 37");
 //        getData();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.v("testing", "Line 44");
         getData();
     }
 
@@ -53,16 +51,28 @@ public class RentedProductList extends AppCompatActivity {
     }
 
     private void getData() {
-        Log.v("testing", "Line 55");
         rentedProduct.clear();
 
-        Utility.getCollectionReferenceForRentedProduct().whereEqualTo("category", equipmentName)
-                .whereNotEqualTo("giver_id", Utility.getCurrentUser().getUid())
+        ArrayList<String> requestList = new ArrayList<>();
+        Utility.getCollectionReferenceForSentRequest().get().addOnSuccessListener(documentSnapshot -> {
+            for (DocumentSnapshot docSnap : documentSnapshot) {
+                requestList.add(String.valueOf(docSnap.get("productId")));
+            }
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Utility.getCollectionReferenceForRentedProduct().whereEqualTo("category", equipmentName)
+                        .whereNotEqualTo("giver_id", Utility.getCurrentUser().getUid())
                         .get().addOnSuccessListener(documentSnapshots -> {
-                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                                rentedProduct.add(documentSnapshot.toObject(ProductModel.class));
-                                productListAdapter.notifyDataSetChanged();
-                            }
-                });
+                                    for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                                        ProductModel curr = documentSnapshot.toObject(ProductModel.class);
+                                        if (!requestList.contains(curr.getProd_id())) {
+                                            rentedProduct.add(curr);
+                                            productListAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                }
+                        );
+            }
+        });
     }
 }

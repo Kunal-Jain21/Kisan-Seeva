@@ -43,9 +43,9 @@ public class ProductRequestActivity extends AppCompatActivity {
         getData();
 
 //        requestList.add(new Person("Kunal", R.drawable.hand_tools));
-//        requestList.add(new Person("Kunal", R.drawable.hand_tools));
-//        requestList.add(new Person("Kunal", R.drawable.hand_tools));
-//        requestList.add(new Person("Kunal", R.drawable.hand_tools));
+        requestList.add(new Person("Kunal", R.drawable.hand_tools));
+        requestList.add(new Person("Kunal", R.drawable.hand_tools));
+        requestList.add(new Person("Kunal", R.drawable.hand_tools));
         person_request_list = findViewById(R.id.person_request_list);
         requestListAdapter = new RequestListAdapter(this, requestList);
         person_request_list.setLayoutManager(new LinearLayoutManager(this));
@@ -70,8 +70,5 @@ public class ProductRequestActivity extends AppCompatActivity {
             requestList.addAll(documentSnapshots.toObjects(Person.class));
             requestListAdapter.notifyDataSetChanged();
         });
-
-            Log.v("test",""+requestList.size());
-            Log.v("test",requestList.get(0).getName());
     }
 }
