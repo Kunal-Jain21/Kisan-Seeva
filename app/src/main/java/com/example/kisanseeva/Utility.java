@@ -24,16 +24,29 @@ public class Utility {
         return FirebaseFirestore.getInstance().collection("Product");
     }
 
-    // To get user's data
+    // To get current user's data
     public static DocumentReference getDocumentReferenceOfUser() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = getCurrentUser();
         return FirebaseFirestore.getInstance().collection("User")
                 .document(currentUser.getUid());
     }
 
+    // TO get other user profile
+    public static DocumentReference getDocumentReferenceOfUser(String userID) {
+        return FirebaseFirestore.getInstance().collection("User")
+                .document(userID);
+    }
+
+
     // Reference to add Image in Database
-    public static StorageReference getStorageReferenceForImage() {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Image1" + new Random().nextInt(50));
+    public static StorageReference getStorageReferenceForProductImage() {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("productImages").child("Image1" + new Random().nextInt(50));
+        return storageReference;
+    }
+
+    // Reference to add Image in Database
+    public static StorageReference getStorageReferenceForProfileImage() {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("profileImages").child("Image1" + new Random().nextInt(50));
         return storageReference;
     }
 

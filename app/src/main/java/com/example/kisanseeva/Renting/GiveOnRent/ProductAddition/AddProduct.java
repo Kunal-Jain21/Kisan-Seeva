@@ -114,7 +114,7 @@ public class AddProduct extends AppCompatActivity {
     }
 
     private void addProductToFirebase(ProductModel currProduct) {
-        StorageReference storageReference = Utility.getStorageReferenceForImage();
+        StorageReference storageReference = Utility.getStorageReferenceForProductImage();
         // adding image to storage
         storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
             storageReference.getDownloadUrl().addOnSuccessListener(uri1 -> {

@@ -84,7 +84,7 @@ public class VerifyOTP extends AppCompatActivity {
                                     progressBar.setVisibility(View.GONE);
                                     buttonVerify.setVisibility(View.VISIBLE);
                                     if (task.isSuccessful()) {
-                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), UserInformation.class);
                                         intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                     } else {

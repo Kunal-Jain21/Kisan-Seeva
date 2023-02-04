@@ -1,7 +1,6 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.example.kisanseeva.R;
 import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
 import com.example.kisanseeva.Utility;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ public class ProductRequestActivity extends AppCompatActivity {
 
     RecyclerView person_request_list;
     RequestListAdapter requestListAdapter;
-    ArrayList<Person> requestList;
+    ArrayList<Person> requesterList;
     String prod_id;
     private ImageView product_img;
     TextView prod_name, prod_desc, prod_price;
@@ -39,22 +39,17 @@ public class ProductRequestActivity extends AppCompatActivity {
         prod_price = findViewById(R.id.prod_price);
         product_img = findViewById(R.id.product_img);
         setData();
-        requestList = new ArrayList<>();
+        requesterList = new ArrayList<>();
         getData();
 
-//        requestList.add(new Person("Kunal", R.drawable.hand_tools));
-//        requestList.add(new Person("Kunal", R.drawable.hand_tools));
-//        requestList.add(new Person("Kunal", R.drawable.hand_tools));
-//        requestList.add(new Person("Kunal", R.drawable.hand_tools));
         person_request_list = findViewById(R.id.person_request_list);
-        requestListAdapter = new RequestListAdapter(this, requestList);
+        requestListAdapter = new RequestListAdapter(this, requesterList);
         person_request_list.setLayoutManager(new LinearLayoutManager(this));
         person_request_list.setAdapter(requestListAdapter);
         requestListAdapter.notifyDataSetChanged();
     }
 
     void setData() {
-        Log.v("testing","Line 56");
         Utility.getCollectionReferenceForRentedProduct().document(prod_id)
                 .get().addOnSuccessListener(documentSnapshot -> {
                     ProductModel curr = documentSnapshot.toObject(ProductModel.class);
@@ -67,11 +62,14 @@ public class ProductRequestActivity extends AppCompatActivity {
 
     void getData() {
         Utility.getCollectionReferenceForApplication(prod_id).get().addOnSuccessListener(documentSnapshots -> {
-            requestList.addAll(documentSnapshots.toObjects(Person.class));
-            requestListAdapter.notifyDataSetChanged();
+            for (DocumentSnapshot doc : documentSnapshots) {
+                Log.v("testing66", String.valueOf(doc.get("requestUserId")));
+                Utility.getDocumentReferenceOfUser(String.valueOf(doc.get("requestUserId")))
+                        .get().addOnSuccessListener(documentSnapshot -> {
+                            requesterList.add(documentSnapshot.toObject(Person.class));
+                            requestListAdapter.notifyDataSetChanged();
+                        });
+            }
         });
-
-            Log.v("test",""+requestList.size());
-            Log.v("test",requestList.get(0).getName());
     }
 }

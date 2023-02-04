@@ -34,8 +34,8 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
     @Override
     public void onBindViewHolder(@NonNull PersonList holder, int position) {
         Person curr = requestArrayList.get(position);
-        holder.personName.setText(curr.getName());
-        Glide.with(context).load(curr.getImage()).into(holder.personProfile);
+        holder.personName.setText(curr.getFirstName());
+//        Glide.with(context).load(curr.getImage()).into(holder.personProfile);
     }
 
     @Override
