@@ -1,9 +1,11 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.kisanseeva.R;
+import com.example.kisanseeva.Utility;
 
 import java.util.ArrayList;
 
@@ -19,10 +22,12 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
     Context context;
     ArrayList<Person> requestArrayList;
+    AcceptOrRejectApplication acceptOrRejectApplication;
 
-    public RequestListAdapter(Context context, ArrayList<Person> requestList) {
+    public RequestListAdapter(Context context, ArrayList<Person> requestList, AcceptOrRejectApplication acceptOrRejectApplication) {
         this.context = context;
         this.requestArrayList = requestList;
+        this.acceptOrRejectApplication = acceptOrRejectApplication;
     }
 
     @NonNull
@@ -35,6 +40,15 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
     public void onBindViewHolder(@NonNull PersonList holder, int position) {
         Person curr = requestArrayList.get(position);
         holder.personName.setText(curr.getFirstName());
+//        Glide.with(context).load(curr.g()).into(holder.personProfile);
+        holder.acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                acceptOrRejectApplication.acceptButtonListener(holder.getAdapterPosition());
+                holder.acceptButton.setEnabled(false);
+            }
+        });
+        holder.personName.setText(curr.getFirstName());
 //        Glide.with(context).load(curr.getImage()).into(holder.personProfile);
     }
 
@@ -46,10 +60,15 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
     class PersonList extends RecyclerView.ViewHolder {
         ImageView personProfile;
         TextView personName;
+        Button acceptButton;
+
         public PersonList(@NonNull View view) {
             super(view);
             personProfile = view.findViewById(R.id.person_img);
             personName = view.findViewById(R.id.person_name);
+            acceptButton = view.findViewById(R.id.acceptButton);
         }
     }
 }
+
+

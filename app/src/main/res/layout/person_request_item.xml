@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageView
+    <Button
         android:id="@+id/acceptButton"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toStartOf="@id/rejectButton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/rejectButton"
         android:layout_width="30dp"
         android:layout_height="30dp"

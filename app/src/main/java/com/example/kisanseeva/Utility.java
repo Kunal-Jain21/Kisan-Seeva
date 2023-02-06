@@ -14,7 +14,6 @@ public class Utility {
 
     // For getting list of application for a product
     public static CollectionReference getCollectionReferenceForApplication(String id) {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         return FirebaseFirestore.getInstance().collection("Product")
                 .document(id).collection("requestApplication");
     }
@@ -32,16 +31,16 @@ public class Utility {
     }
 
     // TO get other user profile
-    public static DocumentReference getDocumentReferenceOfUser(String userID) {
-        return FirebaseFirestore.getInstance().collection("User")
-                .document(userID);
-    }
-
 
     // Reference to add Image in Database
     public static StorageReference getStorageReferenceForProductImage() {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("productImages").child("Image1" + new Random().nextInt(50));
         return storageReference;
+    }
+
+    public static DocumentReference getDocumentReferenceOfUser(String userId) {
+        return FirebaseFirestore.getInstance().collection("User")
+                .document(userId);
     }
 
     // Reference to add Image in Database

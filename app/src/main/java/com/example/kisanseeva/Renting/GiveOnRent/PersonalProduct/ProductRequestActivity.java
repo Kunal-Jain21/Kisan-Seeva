@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.kisanseeva.R;
@@ -17,7 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
-public class ProductRequestActivity extends AppCompatActivity {
+public class ProductRequestActivity extends AppCompatActivity implements AcceptOrRejectApplication{
 
     RecyclerView person_request_list;
     RequestListAdapter requestListAdapter;
@@ -25,6 +26,7 @@ public class ProductRequestActivity extends AppCompatActivity {
     String prod_id;
     private ImageView product_img;
     TextView prod_name, prod_desc, prod_price;
+    private ArrayList<String> applicationIdList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,16 +42,19 @@ public class ProductRequestActivity extends AppCompatActivity {
         product_img = findViewById(R.id.product_img);
         setData();
         requesterList = new ArrayList<>();
+        applicationIdList = new ArrayList<>();
         getData();
 
         person_request_list = findViewById(R.id.person_request_list);
-        requestListAdapter = new RequestListAdapter(this, requesterList);
+        requestListAdapter = new RequestListAdapter(this, requesterList,this);
         person_request_list.setLayoutManager(new LinearLayoutManager(this));
         person_request_list.setAdapter(requestListAdapter);
         requestListAdapter.notifyDataSetChanged();
+
     }
 
     void setData() {
+        Log.v("testing","Line 56");
         Utility.getCollectionReferenceForRentedProduct().document(prod_id)
                 .get().addOnSuccessListener(documentSnapshot -> {
                     ProductModel curr = documentSnapshot.toObject(ProductModel.class);
@@ -71,5 +76,18 @@ public class ProductRequestActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    @Override
+    public void acceptButtonListener(int position) {
+        Log.v("testing","line 86");
+        Utility.getCollectionReferenceForApplication(prod_id).
+                document(applicationIdList.get(position)).update("isApproved",true).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        Toast.makeText(this,"Approved Successfully",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(this,"Failed",Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

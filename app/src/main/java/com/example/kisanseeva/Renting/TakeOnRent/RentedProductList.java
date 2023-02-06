@@ -31,7 +31,6 @@ public class RentedProductList extends AppCompatActivity {
 
         recycle = findViewById(R.id.rented_product_list);
         equipmentName = getIntent().getStringExtra("equipmentName");
-        Log.v("EquipName", equipmentName);
         rentedProduct = new ArrayList<>();
 
         setRecyclerView();
@@ -70,8 +69,7 @@ public class RentedProductList extends AppCompatActivity {
                                             productListAdapter.notifyDataSetChanged();
                                         }
                                     }
-                                }
-                        );
+                                });
             }
         });
     }
