@@ -1,7 +1,6 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.kisanseeva.R;
-import com.example.kisanseeva.Utility;
 
 import java.util.ArrayList;
 
@@ -40,7 +38,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
     public void onBindViewHolder(@NonNull PersonList holder, int position) {
         Person curr = requestArrayList.get(position);
         holder.personName.setText(curr.getFirstName());
-//        Glide.with(context).load(curr.g()).into(holder.personProfile);
+        Glide.with(context).load(curr.getProfileImg()).into(holder.personProfile);
         holder.acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +47,6 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             }
         });
         holder.personName.setText(curr.getFirstName());
-//        Glide.with(context).load(curr.getImage()).into(holder.personProfile);
     }
 
     @Override

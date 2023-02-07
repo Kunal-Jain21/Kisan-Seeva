@@ -24,6 +24,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,12 +65,11 @@ public class UserInformation extends AppCompatActivity {
 
         setStateSpinner();
         setCitySpinner();
-
         uploadImage.setOnClickListener(view -> {
             ImagePicker.with(UserInformation.this)
                     .crop()                    //Crop image(Optional), Check Customization for more option
-                    //                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                    //                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+//                                            .compress(1024)			//Final image size will be less than 1 MB(Optional)
+//                                            .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                     .start(10);
         });
 
@@ -103,7 +103,6 @@ public class UserInformation extends AppCompatActivity {
             uri = data.getData();
             profilePic.setImageURI(uri);
         }
-
     }
 
     private void setStateSpinner() {
@@ -161,6 +160,8 @@ public class UserInformation extends AppCompatActivity {
     private boolean verifyData() {
         String pinCoderRegex = "^[1-9]{1}[0-9]{2}\\s{0,1}[0-9]{3}$";
         Pattern p = Pattern.compile(pinCoderRegex);
+
+
         if (personFirstName == null || personFirstName.isEmpty()) {
             firstName.setError("Enter First Name");
             return false;
@@ -234,6 +235,11 @@ public class UserInformation extends AppCompatActivity {
             currUser.setGender(personGender);
             currUser.setState(selectedState);
             currUser.setCity(selectedCity);
+            if (uri == null) {
+                currUser.setProfileImg("https://firebasestorage.googleapis.com/v0/b/kisan-seeva-6c8fd.appspot.com/o/profileImages%2Fuser.png?alt=media&token=131c948a-075e-4fd6-8366-76218dfed62a");
+            } else {
+                uploadImage(currUser);
+            }
             addProductToFirebase(currUser);
         } else {
             progressBar.setVisibility(View.GONE);
@@ -241,24 +247,27 @@ public class UserInformation extends AppCompatActivity {
         }
     }
 
-    private void addProductToFirebase(Person currUser) {
+    private void uploadImage(Person currUser) {
         StorageReference storageReference = Utility.getStorageReferenceForProfileImage();
-        storageReference.putFile(uri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    storageReference.getDownloadUrl().addOnSuccessListener(imageUrl -> {
-                        currUser.setProfileImg(imageUrl.toString());
-                        Utility.getDocumentReferenceOfUser().set(currUser).addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(this, "Person data added", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(UserInformation.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                progressBar.setVisibility(View.GONE);
-                                submitBtn.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    });
-                });
+        UploadTask uploadTask = storageReference.putFile(uri);
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            storageReference.getDownloadUrl().addOnSuccessListener(imageUrl -> {
+                currUser.setProfileImg(imageUrl.toString());
+            });
+        });
+    }
+
+    private void addProductToFirebase(Person currUser) {
+        Utility.getDocumentReferenceOfUser().set(currUser).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "Person data added", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserInformation.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                progressBar.setVisibility(View.GONE);
+                submitBtn.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

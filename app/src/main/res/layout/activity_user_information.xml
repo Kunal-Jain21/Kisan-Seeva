@@ -33,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                app:srcCompat="@drawable/irrigation"
+                app:srcCompat="@drawable/person"
                 app:strokeColor="@color/black"
                 app:strokeWidth="2dp" />
 
