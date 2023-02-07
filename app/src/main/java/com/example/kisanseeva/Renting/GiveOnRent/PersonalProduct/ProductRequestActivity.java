@@ -1,9 +1,11 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -54,7 +56,6 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
     }
 
     void setData() {
-        Log.v("testing","Line 56");
         Utility.getCollectionReferenceForRentedProduct().document(prod_id)
                 .get().addOnSuccessListener(documentSnapshot -> {
                     ProductModel curr = documentSnapshot.toObject(ProductModel.class);
@@ -68,6 +69,7 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
     void getData() {
         Utility.getCollectionReferenceForApplication(prod_id).get().addOnSuccessListener(documentSnapshots -> {
             for (DocumentSnapshot doc : documentSnapshots) {
+                applicationIdList.add(doc.getId());
                 Log.v("testing66", String.valueOf(doc.get("requestUserId")));
                 Utility.getDocumentReferenceOfUser(String.valueOf(doc.get("requestUserId")))
                         .get().addOnSuccessListener(documentSnapshot -> {
@@ -80,14 +82,15 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
 
     @Override
     public void acceptButtonListener(int position) {
-        Log.v("testing","line 86");
+        Log.v("testing", "line 86");
         Utility.getCollectionReferenceForApplication(prod_id).
-                document(applicationIdList.get(position)).update("isApproved",true).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        Toast.makeText(this,"Approved Successfully",Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(this,"Failed",Toast.LENGTH_SHORT).show();
+                document(applicationIdList.get(position)).update("isApproved", true).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Approved Successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
+        Log.v("testing", "line 59");
     }
 }

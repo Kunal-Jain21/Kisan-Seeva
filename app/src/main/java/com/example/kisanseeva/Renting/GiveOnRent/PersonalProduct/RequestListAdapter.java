@@ -1,14 +1,18 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -34,20 +38,30 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
         return new PersonList(LayoutInflater.from(context).inflate(R.layout.person_request_item, parent, false));
     }
 
+    int currPos;
     @Override
     public void onBindViewHolder(@NonNull PersonList holder, int position) {
         Person curr = requestArrayList.get(position);
         holder.personName.setText(curr.getFirstName());
         Glide.with(context).load(curr.getProfileImg()).into(holder.personProfile);
-        holder.acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+        holder.acceptButton.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Are you sure?");
+            builder.setMessage("Select an option");
+
+            builder.setPositiveButton("Accept", (dialog, which) -> {
                 acceptOrRejectApplication.acceptButtonListener(holder.getAdapterPosition());
-                holder.acceptButton.setEnabled(false);
-            }
+                dialog.cancel();
+            });
+            builder.setNegativeButton("Reject",null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            Log.v("testing","line 51");
+
         });
-        holder.personName.setText(curr.getFirstName());
     }
+
 
     @Override
     public int getItemCount() {
