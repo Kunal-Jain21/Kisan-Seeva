@@ -22,7 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Person Name"
-        android:paddingLeft="20dp"
+        android:paddingStart="10dp"
+        android:layout_marginEnd="5dp"
         android:textSize="25sp"
         app:layout_constraintStart_toEndOf="@id/person_img"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,28 +32,31 @@
 
     <Button
         android:id="@+id/acceptButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="10dp"
-        android:background="#7CFC00"
-        android:contentDescription="Delete button"
+        android:text="Accept offer"
         android:scaleType="center"
         android:src="@drawable/accept"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/rejectButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
-    <ImageButton
-        android:id="@+id/rejectButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="#FF5733"
-        android:contentDescription="Delete button"
-        android:padding="5dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/reject"
+    <TextView
+        android:id="@+id/pendingApproval"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:src="@drawable/accept"
+        android:textColor="#00FF00"
+        android:text="Offer Approved"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

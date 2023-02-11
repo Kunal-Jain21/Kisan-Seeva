@@ -1,11 +1,9 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -19,6 +17,7 @@ import com.example.kisanseeva.Utility;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ProductRequestActivity extends AppCompatActivity implements AcceptOrRejectApplication{
 
@@ -28,7 +27,7 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
     String prod_id;
     private ImageView product_img;
     TextView prod_name, prod_desc, prod_price;
-    private ArrayList<String> applicationIdList;
+    private ArrayList<String> applicationIdList, applicationStatusList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +44,11 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
         setData();
         requesterList = new ArrayList<>();
         applicationIdList = new ArrayList<>();
+        applicationStatusList = new ArrayList<>();
         getData();
 
         person_request_list = findViewById(R.id.person_request_list);
-        requestListAdapter = new RequestListAdapter(this, requesterList,this);
+        requestListAdapter = new RequestListAdapter(this, requesterList,this,applicationStatusList);
         person_request_list.setLayoutManager(new LinearLayoutManager(this));
         person_request_list.setAdapter(requestListAdapter);
         requestListAdapter.notifyDataSetChanged();
@@ -69,8 +69,10 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
     void getData() {
         Utility.getCollectionReferenceForApplication(prod_id).get().addOnSuccessListener(documentSnapshots -> {
             for (DocumentSnapshot doc : documentSnapshots) {
+                applicationStatusList.add((String) doc.get("isApproved"));
                 applicationIdList.add(doc.getId());
-                Log.v("testing66", String.valueOf(doc.get("requestUserId")));
+                Log.v("testing66", "id "+String.valueOf(doc.get("requestUserId")));
+                Log.v("testing74", "status "+String.valueOf(doc.get("isApproved")));
                 Utility.getDocumentReferenceOfUser(String.valueOf(doc.get("requestUserId")))
                         .get().addOnSuccessListener(documentSnapshot -> {
                             requesterList.add(documentSnapshot.toObject(Person.class));
@@ -80,17 +82,24 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
         });
     }
 
+
     @Override
     public void acceptButtonListener(int position) {
-        Log.v("testing", "line 86");
         Utility.getCollectionReferenceForApplication(prod_id).
-                document(applicationIdList.get(position)).update("isApproved", true).addOnCompleteListener(task -> {
+                document(applicationIdList.get(position)).update("isApproved", "true").addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(this, "Approved Successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
-        Log.v("testing", "line 59");
+    }
+
+    @Override
+    public void rejectButtonListener(int position) {
+        Utility.getCollectionReferenceForApplication(prod_id).
+                document(applicationIdList.get(position)).update("isApproved", "false").addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Offer Declined", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

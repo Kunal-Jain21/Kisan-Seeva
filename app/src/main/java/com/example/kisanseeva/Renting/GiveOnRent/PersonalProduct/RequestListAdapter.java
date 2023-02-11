@@ -1,8 +1,7 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.util.Log;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +25,13 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
     ArrayList<Person> requestArrayList;
     AcceptOrRejectApplication acceptOrRejectApplication;
 
-    public RequestListAdapter(Context context, ArrayList<Person> requestList, AcceptOrRejectApplication acceptOrRejectApplication) {
+    ArrayList<String> applicationStatusList;
+
+    public RequestListAdapter(Context context, ArrayList<Person> requestList, AcceptOrRejectApplication acceptOrRejectApplication, ArrayList<String> applicationStatusList) {
         this.context = context;
         this.requestArrayList = requestList;
         this.acceptOrRejectApplication = acceptOrRejectApplication;
+        this.applicationStatusList = applicationStatusList;
     }
 
     @NonNull
@@ -39,27 +41,43 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
     }
 
     int currPos;
+
     @Override
     public void onBindViewHolder(@NonNull PersonList holder, int position) {
         Person curr = requestArrayList.get(position);
         holder.personName.setText(curr.getFirstName());
         Glide.with(context).load(curr.getProfileImg()).into(holder.personProfile);
 
-        holder.acceptButton.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Are you sure?");
-            builder.setMessage("Select an option");
+        String condition = applicationStatusList.get(holder.getAdapterPosition());
+        if (condition.equals("true")) {
+            holder.acceptButton.setVisibility(View.GONE);
+            holder.pendingApproval.setVisibility(View.VISIBLE);
+        } else if (condition.equals("false")) {
+            holder.acceptButton.setVisibility(View.GONE);
+            holder.pendingApproval.setVisibility(View.VISIBLE);
+            holder.pendingApproval.setText("Offer Declined");
+            holder.pendingApproval.setTextColor(Color.parseColor("#FF0000"));
+        } else {
+            holder.acceptButton.setOnClickListener(view -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Are you sure?");
+                builder.setMessage("Select an option");
 
-            builder.setPositiveButton("Accept", (dialog, which) -> {
-                acceptOrRejectApplication.acceptButtonListener(holder.getAdapterPosition());
-                dialog.cancel();
+                builder.setPositiveButton("Accept", (dialog, which) -> {
+                    acceptOrRejectApplication.acceptButtonListener(holder.getAdapterPosition());
+                    holder.acceptButton.setEnabled(false);
+                    dialog.cancel();
+                });
+                builder.setNegativeButton("Reject", (dialog, which) -> {
+                    acceptOrRejectApplication.rejectButtonListener(holder.getAdapterPosition());
+                    holder.acceptButton.setEnabled(false);
+                    dialog.cancel();
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             });
-            builder.setNegativeButton("Reject",null);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            Log.v("testing","line 51");
+        }
 
-        });
     }
 
 
@@ -70,7 +88,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
 
     class PersonList extends RecyclerView.ViewHolder {
         ImageView personProfile;
-        TextView personName;
+        TextView personName, pendingApproval;
         Button acceptButton;
 
         public PersonList(@NonNull View view) {
@@ -78,6 +96,7 @@ public class RequestListAdapter extends RecyclerView.Adapter<RequestListAdapter.
             personProfile = view.findViewById(R.id.person_img);
             personName = view.findViewById(R.id.person_name);
             acceptButton = view.findViewById(R.id.acceptButton);
+            pendingApproval = view.findViewById(R.id.pendingApproval);
         }
     }
 }

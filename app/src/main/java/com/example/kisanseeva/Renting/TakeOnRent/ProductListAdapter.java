@@ -56,9 +56,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             public void onClick(View view) {
                 DocumentReference applicationReference =Utility.getCollectionReferenceForRentedProduct()
                         .document(curr.getProd_id()).collection("requestApplication").document();
-                applicationReference.set(new HashMap<String,Object>(){{
+                applicationReference.set(new HashMap<String,String>(){{
                     put("requestUserId",Utility.getCurrentUser().getUid());
-                    put("isApproved",false);
+                    put("isApproved","");
                 }
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()){
