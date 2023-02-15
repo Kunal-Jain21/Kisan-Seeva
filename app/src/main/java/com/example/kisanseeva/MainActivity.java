@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
-
         binding.bottomNav.setOnItemSelectedListener(Item -> {
 
             switch (Item.getItemId()) {
@@ -31,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.renting:
                     replaceFragment(new RentingFragment());
+                    break;
+                case R.id.profile:
+                    replaceFragment(new ProfileFragment());
                     break;
 
             }

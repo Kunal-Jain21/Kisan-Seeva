@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.kisanseeva.ml.ImageClassifier;
 import com.example.kisanseeva.ml.LiteModelPlantDiseaseDefault1;
 
 import org.tensorflow.lite.DataType;
@@ -31,12 +32,14 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
     Button camera, gallery;
     ImageView imageView;
     TextView result;
-    int imageSize = 224;
+    int imageSize = 32;
 
 
     @Override
@@ -115,10 +118,11 @@ public class HomeFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void classifyImage(Bitmap image) {
         try {
-            LiteModelPlantDiseaseDefault1 model = LiteModelPlantDiseaseDefault1.newInstance(getContext());
+            ImageClassifier model = ImageClassifier.newInstance(requireContext());
+//            LiteModelPlantDiseaseDefault1 model = LiteModelPlantDiseaseDefault1.newInstance(requireContext());
 
             // Creates inputs for reference.
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 3}, DataType.FLOAT32);
             ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3);
             byteBuffer.order(ByteOrder.nativeOrder());
 
@@ -126,42 +130,53 @@ public class HomeFragment extends Fragment {
             image.getPixels(intValue, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
 
             int pixel = 0;
-            for (int i = 0; i < imageSize; i++) {
-                for (int j = 0; j < imageSize; j++) {
-                    int val = intValue[pixel++];
-                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255.f));
-                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255.f));
-                    byteBuffer.putFloat((val & 0xFF) * (1.f / 255.f));
-                }
-            }
+//            for (int i = 0; i < imageSize; i++) {
+//                for (int j = 0; j < imageSize; j++) {
+//                    int val = intValue[pixel++];
+//                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255.f));
+//                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255.f));
+//                    byteBuffer.putFloat((val & 0xFF) * (1.f / 255.f));
+//                }
+//            }
 
             inputFeature0.loadBuffer(byteBuffer);
             // Runs model inference and gets result.
-            LiteModelPlantDiseaseDefault1.Outputs outputs = model.process(inputFeature0);
+            ImageClassifier.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidence = outputFeature0.getFloatArray();
             int maxPos = 0;
-            float maxConfidence = 0;
+            float maxConfidence = Integer.MIN_VALUE;
             for (int i = 0; i < confidence.length; i++) {
                 if (confidence[i] > maxConfidence) {
                     maxConfidence = confidence[i];
                     maxPos = i;
                 }
             }
+            Log.v("testing", maxPos + "" + Arrays.toString(confidence));
+            String[] classes = {"Leaf", "Other"};
+//            String[] classes = {"aeroplane", "antelope", "badger", "bat", "bear", "bee", "beetle", "bison", "boar", "butterfly", "car", "cat", //12
+//                    "caterpillar", "chimpanzee", "cockroach", "cow", "coyote", "crab", "crow", "deer", "dog", "dolphin", "donkey", "dragonfly", // 12
+//                    "duck", "eagle", "elephant", "flamingo", "flower", "fly", "fox", "fruit", "goat", "goldfish", "goose", "gorilla", "grasshopper", //13
+//                    "hamster", "hare", "hedgehog", "hippopotamus", "hornbill", "horse", "hummingbird", "hyena", "jellyfish", "kangaroo", "koala", // 11
+//                    "ladybugs", "leaf", "leopard", "lion", "lizard", "lobster", "mosquito", "moth", "motorbike", "mouse", "octopus", "okapi", "orangutan", // 13
+//                    "otter", "owl", "ox", "oyster", "panda", "parrot", "pelecaniformes", "penguin", "person", "pig", "pigeon", "porcupine", "possum",
+//                    "raccoon", "rat", "reindeer", "rhinoceros", "sandpiper", "seahorse", "seal", "shark", "sheep", "snake", "sparrow", "squid", "squirrel",
+//                    "starfish", "swan", "tiger", "turkey", "turtle", "whale", "wolf", "wombat", "woodpecker", "zebra"};
 
-            String[] classes = {"Apple Scab", "Black Rot", "Cedar Apple Rust", "Healthy Apple", "Healthy Blueberry",
-                    "Powdery mildew", "Healthy Cherry", "Cercospora leaf spot Gray leaf spot",
-                    "Common Rust", "Northern Leaf Blight", "Healthy Corn", "Black Rot", "Esac (Black Measles)",
-                    "Leaf blight (Isariopsis Leaf Spot)", "Healthy", "Haunglongbing (Citrus greening)",
-                    "Bacterial Spot", "Healthy Pepper Bell", "Bacterial Spot", "Healthy Peach", "Early Blight",
-                    "Late Blight", "Healthy Potato", "Healthy Rasberry", "Healthy Soyabean", "Powdery Mildery", "Leaf Scorch",
-                    "Healthy Strawberry", "Bacterial Spot", "Early Blight", "Late Blight", "Leaf Mold",
-                    "Septoria Leaf Spot", "Spider Mites Two-spotted Spider Mite",
-                    "Target Spot", "Tomato Yellow Leaf Curl Virus", "Tomato Mosaic Virus",
-                    "Tomato Healthy"};
+//            String[] classes = {"Apple Scab", "Black Rot", "Cedar Apple Rust", "Healthy Apple", "Healthy Blueberry",
+//                    "Powdery mildew", "Healthy Cherry", "Cercospora leaf spot Gray leaf spot",
+//                    "Common Rust", "Northern Leaf Blight", "Healthy Corn", "Black Rot", "Esac (Black Measles)",
+//                    "Leaf blight (Isariopsis Leaf Spot)", "Healthy", "Haunglongbing (Citrus greening)",
+//                    "Bacterial Spot", "Healthy Pepper Bell", "Bacterial Spot", "Healthy Peach", "Early Blight",
+//                    "Late Blight", "Healthy Potato", "Healthy Rasberry", "Healthy Soyabean", "Powdery Mildery", "Leaf Scorch",
+//                    "Healthy Strawberry", "Bacterial Spot", "Early Blight", "Late Blight", "Leaf Mold",
+//                    "Septoria Leaf Spot", "Spider Mites Two-spotted Spider Mite",
+//                    "Target Spot", "Tomato Yellow Leaf Curl Virus", "Tomato Mosaic Virus",
+//                    "Tomato Healthy"};
 
-            result.setText(confidence.length + " " + classes[maxPos]);
+            result.setText(" " + classes[maxPos]);
+            Arrays.fill(confidence, 0);
 //            Log.v("Prediction", String.valueOf(outputs));
             // Releases model resources if no longer used.
             model.close();

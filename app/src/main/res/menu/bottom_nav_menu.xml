@@ -13,4 +13,8 @@
         android:id="@+id/renting"
         android:icon="@drawable/ic_baseline_agriculture_24"
         android:title="Renting" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/person"
+        android:title="Profile" />
 </menu>
