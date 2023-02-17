@@ -2,7 +2,6 @@ package com.example.kisanseeva.Renting.TakeOnRent;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -62,14 +61,14 @@ public class RentedProductList extends AppCompatActivity {
                 Utility.getCollectionReferenceForRentedProduct().whereEqualTo("category", equipmentName)
                         .whereNotEqualTo("giver_id", Utility.getCurrentUser().getUid())
                         .get().addOnSuccessListener(documentSnapshots -> {
-                                    for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                                        ProductModel curr = documentSnapshot.toObject(ProductModel.class);
-                                        if (!requestList.contains(curr.getProd_id())) {
-                                            rentedProduct.add(curr);
-                                            productListAdapter.notifyDataSetChanged();
-                                        }
-                                    }
-                                });
+                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                                ProductModel curr = documentSnapshot.toObject(ProductModel.class);
+                                if (!requestList.contains(curr.getProd_id())) {
+                                    rentedProduct.add(curr);
+                                    productListAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
             }
         });
     }

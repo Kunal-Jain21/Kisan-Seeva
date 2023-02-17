@@ -3,6 +3,7 @@ package com.example.kisanseeva;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.Person;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.button.MaterialButton;
@@ -32,7 +34,7 @@ import java.util.regex.Pattern;
 
 public class UserInformation extends AppCompatActivity {
 
-    ShapeableImageView profilePic;
+    ShapeableImageView profileImg;
     TextInputLayout firstName, lastname, emailAddress, postalAddress, pinCode;
     RadioGroup genderRadioGrp;
     RadioButton femaleRadioButton;
@@ -43,13 +45,19 @@ public class UserInformation extends AppCompatActivity {
     ProgressBar progressBar;
     ImageButton uploadImage;
     Uri uri;
+    Person currUser;
+    ArrayAdapter<String> stateAdapter, cityAdapter;
+    Person editPerson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
+        Intent intent = getIntent();
+        boolean isEdit = intent.getBooleanExtra("edit", false);
+        Log.v("testing", "" + isEdit);
 
-        profilePic = findViewById(R.id.profileImg);
+        profileImg = findViewById(R.id.profileImg);
         uploadImage = findViewById(R.id.uploadImage);
         firstName = findViewById(R.id.firstName);
         lastname = findViewById(R.id.lastname);
@@ -68,8 +76,8 @@ public class UserInformation extends AppCompatActivity {
         uploadImage.setOnClickListener(view -> {
             ImagePicker.with(UserInformation.this)
                     .crop()                    //Crop image(Optional), Check Customization for more option
-                                            .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                                            .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                    .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(1080, 1080)    //Final image resolution will be less than 1080 x 1080(Optional)
                     .start(10);
         });
 
@@ -88,12 +96,62 @@ public class UserInformation extends AppCompatActivity {
             }
         });
 
+
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveData();
             }
         });
+
+        if (isEdit) { // called for edit mode
+            setDataForField();
+            submitBtn.setText("Update Profile");
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        editPerson = new Person();
+
+    }
+
+    private void setDataForField() {
+        String currUserId = Utility.getCurrentUser().getUid();
+        Utility.getDocumentReferenceOfUser(Utility.getCurrentUser().getUid()).get().addOnSuccessListener(documentSnapshot -> {
+            editPerson = documentSnapshot.toObject(Person.class);
+            firstName.getEditText().setText(editPerson.getFirstName());
+            Log.v("testing123", editPerson.getFirstName());
+            lastname.getEditText().setText(editPerson.getLastName());
+            emailAddress.getEditText().setText(editPerson.getEmail());
+            postalAddress.getEditText().setText(editPerson.getAddress());
+            pinCode.getEditText().setText(editPerson.getPinCode());
+
+            String gender = editPerson.getGender();
+            if (gender.equals("Male")) {
+                genderRadioGrp.check(R.id.maleRadioButton);
+            } else {
+                genderRadioGrp.check(R.id.maleRadioButton);
+            }
+            int statePos = stateAdapter.getPosition(editPerson.getState());
+            stateSpinner.setSelection(statePos);
+
+            int cityPos = cityAdapter.getPosition(editPerson.getCity());
+            citySpinner.setSelection(cityPos);
+            Log.v("testing", editPerson.getProfileImg());
+
+            Uri uri2 = Uri.parse(editPerson.getProfileImg());
+            Glide.with(this).load(uri2).into(profileImg);
+        });
+
+
     }
 
     @Override
@@ -101,7 +159,7 @@ public class UserInformation extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 10 && data != null) {
             uri = data.getData();
-            profilePic.setImageURI(uri);
+            profileImg.setImageURI(uri);
         }
     }
 
@@ -110,7 +168,7 @@ public class UserInformation extends AppCompatActivity {
                 Arrays.asList("Select State", "Maharashtra")
         );
 
-        ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stateArray);
+        stateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stateArray);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(stateAdapter);
         stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -131,7 +189,7 @@ public class UserInformation extends AppCompatActivity {
                 Arrays.asList("Select City", "Mumbai")
         );
 
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityArray);
+        cityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityArray);
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         citySpinner.setAdapter(cityAdapter);
         citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -153,8 +211,6 @@ public class UserInformation extends AppCompatActivity {
         personEmail = emailAddress.getEditText().getText().toString().trim();
         personAddress = postalAddress.getEditText().getText().toString().trim();
         personPinCode = pinCode.getEditText().getText().toString().trim();
-
-
     }
 
     private boolean verifyData() {
@@ -226,7 +282,7 @@ public class UserInformation extends AppCompatActivity {
         submitBtn.setVisibility(View.GONE);
         getDataFromField();
         if (verifyData()) {
-            Person currUser = new Person();
+            currUser = new Person();
             currUser.setFirstName(personFirstName);
             currUser.setLastName(personLastName);
             currUser.setAddress(personAddress);

@@ -1,5 +1,7 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
+import android.net.Uri;
+
 public class Person {
     String firstName, lastName, email, address, pinCode,
             gender, state, city, profileImg;

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,7 +14,6 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/profile"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:layout_marginTop="70sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,15 +34,22 @@
                     app:civ_border_color="#FF000000"
                     app:civ_border_width="2dp" />
 
+
                 <TextView
+                    android:id="@+id/nameOfUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="16sp"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-                    android:text="Kunal Jain"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
+                <ProgressBar
+                    android:id="@+id/progressBarProfile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/editProfile"
@@ -90,19 +95,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/languageSpinner" />
 
-        <Button
-            android:id="@+id/rentProfile"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:backgroundTint="@color/white"
-            android:drawableLeft="@drawable/rentedproduct"
-            android:text="My Post"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/requestedProduct" />
 
         <Button
             style="?android:attr/borderlessButtonStyle"
@@ -115,15 +107,15 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rentProfile" />
+            app:layout_constraintTop_toBottomOf="@id/requestedProduct"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="35sp"
             android:drawableLeft="@drawable/logout"
             android:drawableTint="@color/white"
             android:text="Logout"
-            android:layout_marginBottom="35sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
