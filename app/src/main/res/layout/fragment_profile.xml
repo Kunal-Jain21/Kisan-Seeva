@@ -47,6 +47,7 @@
                     android:textSize="20sp" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/editProfile"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,14 +77,14 @@
             app:layout_constraintTop_toBottomOf="@id/profile" />
 
         <Button
-            android:id="@+id/request"
+            android:id="@+id/requestedProduct"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15sp"
             android:backgroundTint="@color/white"
             android:drawableLeft="@drawable/rentprofile"
-            android:text="My Rent Request"
+            android:text="Requested Product"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -97,11 +98,11 @@
             android:layout_marginTop="15sp"
             android:backgroundTint="@color/white"
             android:drawableLeft="@drawable/rentedproduct"
-            android:text="My Rent Profile"
+            android:text="My Post"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/request" />
+            app:layout_constraintTop_toBottomOf="@id/requestedProduct" />
 
         <Button
             style="?android:attr/borderlessButtonStyle"
