@@ -31,19 +31,24 @@ public class Utility {
     }
 
     // TO get other user profile
-
-    // Reference to add Image in Database
-    public static StorageReference getStorageReferenceForProductImage() {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("productImages").child("Image1" + new Random().nextInt(50));
-        return storageReference;
-    }
-
     public static DocumentReference getDocumentReferenceOfUser(String userId) {
         return FirebaseFirestore.getInstance().collection("User")
                 .document(userId);
     }
 
-    // Reference to add Image in Database
+    // Get Image using url
+    public static StorageReference getStorageReferenceUsingUrl(String url) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
+        return storageReference;
+    }
+
+    // Reference to add Product Image in Database
+    public static StorageReference getStorageReferenceForProductImage() {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("productImages").child("Image1" + new Random().nextInt(50));
+        return storageReference;
+    }
+
+    // Reference to add Profile Image in Database
     public static StorageReference getStorageReferenceForProfileImage() {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("profileImages").child("Image1" + new Random().nextInt(50));
         return storageReference;
@@ -55,6 +60,10 @@ public class Utility {
 
     public static CollectionReference getCollectionReferenceForSentRequest(){
         return getDocumentReferenceOfUser().collection("sentRequest");
+    }
+
+    public static CollectionReference getCollectionReferenceForSentRequest(String userId){
+        return getDocumentReferenceOfUser(userId).collection("sentRequest");
     }
 
 }

@@ -11,15 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.ProductRequestActivity;
 import com.example.kisanseeva.R;
 import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.ProductListAdapter;
+import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.ProductRequestActivity;
 import com.example.kisanseeva.Renting.GiveOnRent.ProductAddition.AddProduct;
 import com.example.kisanseeva.Utility;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GiveOnRent extends Fragment implements productListener {
     FloatingActionButton fab;
@@ -27,12 +28,6 @@ public class GiveOnRent extends Fragment implements productListener {
     ArrayList<ProductModel> rentedProduct;
     ProductListAdapter productListAdapter;
 
-    public static GiveOnRent newInstance(String param1, String param2) {
-        GiveOnRent fragment = new GiveOnRent();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,12 +43,7 @@ public class GiveOnRent extends Fragment implements productListener {
         recyclerView = view.findViewById(R.id.rented_product_list);
 
         // Fab button
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), AddProduct.class));
-            }
-        });
+        fab.setOnClickListener(view1 -> startActivity(new Intent(getActivity(), AddProduct.class)));
 
         rentedProduct = new ArrayList<>();
         // Recycler View
@@ -74,13 +64,6 @@ public class GiveOnRent extends Fragment implements productListener {
         setData();
     }
 
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        setData();
-//    }
-
     private void setData() {
         rentedProduct.clear();
 
@@ -88,7 +71,7 @@ public class GiveOnRent extends Fragment implements productListener {
                 .addOnSuccessListener(documentSnapshots -> {
 
                     for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
-                        String id = documentSnapshot.get("prodId").toString();
+                        String id = Objects.requireNonNull(documentSnapshot.get("prodId")).toString();
                         Utility.getCollectionReferenceForRentedProduct().document(id)
                                 .get().addOnSuccessListener(documentSnapshot1 -> {
                                     ProductModel curr = documentSnapshot1.toObject(ProductModel.class);
@@ -102,18 +85,48 @@ public class GiveOnRent extends Fragment implements productListener {
 
     @Override
     public void deleteItem(String personal_prod_id, String prodId) {
-        Utility.getCollectionReferenceForRentedProduct().document(prodId).delete().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                Utility.getDocumentReferenceOfUser().collection("my_product").document(personal_prod_id).delete().addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()){
-                        Toast.makeText(requireActivity(),"Product Deleted Successfully",Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }else {
-                Toast.makeText(requireActivity(),"Error while deleting product",Toast.LENGTH_SHORT).show();
+
+        // Delete from requester list
+        Utility.getCollectionReferenceForApplication(prodId).get().addOnSuccessListener(documentSnapshots -> {
+            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                Utility.getCollectionReferenceForSentRequest((String) documentSnapshot.get("requestUserId")).document(documentSnapshot.getId())
+                        .delete().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(requireActivity(), "Deleted from " + documentSnapshot.get("requestUserId"), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                documentSnapshot.getReference().delete();
             }
         });
+
+        //Delete from my_product list
+        Utility.getDocumentReferenceOfUser().collection("my_product").document(personal_prod_id).delete().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                Toast.makeText(requireActivity(), "Product Deleted from my_product", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Delete prod details
+        Utility.getCollectionReferenceForRentedProduct().document(prodId).get().addOnSuccessListener(documentSnapshot -> {
+            String imgUrl = Objects.requireNonNull(documentSnapshot.toObject(ProductModel.class)).getProd_img();
+            Utility.getStorageReferenceUsingUrl(imgUrl).delete().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(requireActivity(), "Product Image Deleted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireActivity(), "Error in deleting Image", Toast.LENGTH_SHORT).show();
+                }
+            });
+            documentSnapshot.getReference().delete().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(requireActivity(), "Product Deleted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireActivity(), "Error in deleting Product", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
     }
+
 
     @Override
     public void onItemCLick(String prod_id) {
