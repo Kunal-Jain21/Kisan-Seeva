@@ -27,7 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-
+//TODO : Show progress bar while adding to avoid duplicate addition
 public class AddProduct extends AppCompatActivity {
 
     private EditText nameEditText, descEditText, priceEditText;

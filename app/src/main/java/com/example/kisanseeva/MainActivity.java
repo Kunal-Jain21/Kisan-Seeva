@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private int selectedMenu;
-
+    //TODO : Show homepage on start and all menu in sync
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

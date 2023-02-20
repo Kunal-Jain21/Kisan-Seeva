@@ -19,6 +19,8 @@ import java.util.concurrent.TimeUnit;
 
 public class SendOTP extends AppCompatActivity {
 
+    //TODO : PLace progress bar properly
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -83,6 +83,7 @@ public class VerifyOTP extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     progressBar.setVisibility(View.GONE);
                                     buttonVerify.setVisibility(View.VISIBLE);
+                                    //TODO : Don't ask user info if already registered
                                     if (task.isSuccessful()) {
                                         Intent intent = new Intent(getApplicationContext(), UserInformation.class);
                                         intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

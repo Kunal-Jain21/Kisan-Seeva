@@ -1,6 +1,5 @@
 package com.example.kisanseeva;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,18 +20,19 @@ import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.Person;
 import com.google.android.material.button.MaterialButton;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import android.widget.ProgressBar;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileFragment extends Fragment {
 
-    Button requestedProduct;
     MaterialButton editProfile;
     Person editPerson;
-
     CircleImageView profileImg;
-
     TextView nameOfUser;
-
-    ProgressBar progressBarProfile;
+    Button requestedProduct,logoutBtn;
+    ProgressBar progressBar, progressBarProfile;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -62,21 +62,32 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         requestedProduct = view.findViewById(R.id.requestedProduct);
+        progressBar = view.findViewById(R.id.progressBar);
         editProfile = view.findViewById(R.id.editProfile);
         profileImg = view.findViewById(R.id.profileImg);
         nameOfUser = view.findViewById(R.id.nameOfUser);
         progressBarProfile = view.findViewById(R.id.progressBarProfile);
+        logoutBtn = view.findViewById(R.id.logoutBtn);
 
         requestedProduct.setOnClickListener(view1 -> {
             startActivity(new Intent(requireActivity(), RequestedProductActivity.class));
+        });
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(requireActivity(), SendOTP.class));
+                requireActivity().finish();
+            }
         });
 
         Utility.getDocumentReferenceOfUser(Utility.getCurrentUser().getUid()).get().addOnSuccessListener(documentSnapshot -> {
