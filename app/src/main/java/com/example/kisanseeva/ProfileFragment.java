@@ -43,8 +43,7 @@ public class ProfileFragment extends Fragment {
             editPerson = documentSnapshot.toObject(Person.class);
             String name = editPerson.getFirstName() + " " + editPerson.getLastName();
             nameOfUser.setText(name);
-            Uri uri2 = Uri.parse(editPerson.getProfileImg());
-            Glide.with(this).load(uri2).into(profileImg);
+            Glide.with(requireActivity()).load(editPerson.getProfileImg()).into(profileImg);
         });
         progressBarProfile.setVisibility(View.GONE);
     }

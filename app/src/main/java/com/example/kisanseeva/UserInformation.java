@@ -26,11 +26,13 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.regex.Pattern;
+
+import okhttp3.internal.Util;
 
 public class UserInformation extends AppCompatActivity {
 
@@ -145,10 +147,9 @@ public class UserInformation extends AppCompatActivity {
 
             int cityPos = cityAdapter.getPosition(editPerson.getCity());
             citySpinner.setSelection(cityPos);
-            Log.v("testing", editPerson.getProfileImg());
 
-            Uri uri2 = Uri.parse(editPerson.getProfileImg());
-            Glide.with(this).load(uri2).into(profileImg);
+//            Uri uri2 = Uri.parse(editPerson.getProfileImg());
+            Glide.with(this).load(editPerson.getProfileImg()).into(profileImg);
         });
 
 
@@ -291,29 +292,47 @@ public class UserInformation extends AppCompatActivity {
             currUser.setGender(personGender);
             currUser.setState(selectedState);
             currUser.setCity(selectedCity);
+            addProfileToFirebase(currUser);
             if (uri == null) {
-                currUser.setProfileImg("https://firebasestorage.googleapis.com/v0/b/kisan-seeva-6c8fd.appspot.com/o/profileImages%2Fuser.png?alt=media&token=131c948a-075e-4fd6-8366-76218dfed62a");
-            } else {
+                Utility.getDocumentReferenceOfUser().update(new HashMap<String, Object>() {{
+                    put("profileImg", "https://firebasestorage.googleapis.com/v0/b/kisan-seeva-6c8fd.appspot.com/o/profileImages%2Fuser.png?alt=media&token=131c948a-075e-4fd6-8366-76218dfed62a");
+                }}).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Toast.makeText(this, "Image Updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Image Not Updated", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else {
                 uploadImage(currUser);
             }
-            addProductToFirebase(currUser);
+
         } else {
             progressBar.setVisibility(View.GONE);
             submitBtn.setVisibility(View.VISIBLE);
         }
     }
 
-    private void uploadImage(Person currUser) {
-        StorageReference storageReference = Utility.getStorageReferenceForProfileImage();
-        UploadTask uploadTask = storageReference.putFile(uri);
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            storageReference.getDownloadUrl().addOnSuccessListener(imageUrl -> {
-                currUser.setProfileImg(imageUrl.toString());
+        private void uploadImage(Person currUser) {
+        StorageReference storageReference = Utility.getStorageReferenceForProductImage();
+        storageReference.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+            storageReference.getDownloadUrl().addOnSuccessListener(uri1 -> {
+                Utility.getDocumentReferenceOfUser().update(new HashMap<String, Object>() {{
+                    put("profileImg", uri1);
+                }}).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Toast.makeText(this, "Image Updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Image Not Updated", Toast.LENGTH_SHORT).show();
+                    }
+                });
             });
         });
-    }
+    };
 
-    private void addProductToFirebase(Person currUser) {
+
+    private void addProfileToFirebase(Person currUser) {
         Utility.getDocumentReferenceOfUser().set(currUser).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Person data added", Toast.LENGTH_SHORT).show();

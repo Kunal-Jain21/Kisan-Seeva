@@ -15,7 +15,6 @@
             android:id="@+id/profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -30,6 +29,7 @@
                     android:layout_width="100sp"
                     android:layout_height="100sp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="70sp"
                     android:src="@drawable/person"
                     app:civ_border_color="#FF000000"
                     app:civ_border_width="2dp" />
