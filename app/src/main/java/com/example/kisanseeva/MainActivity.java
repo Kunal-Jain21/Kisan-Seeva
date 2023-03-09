@@ -1,5 +1,6 @@
 package com.example.kisanseeva;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Log.v("testing", selectedMenu + "");
-
+        replaceFragment(new HomeFragment());
         binding.bottomNav.setOnItemSelectedListener(Item -> {
 
             switch (Item.getItemId()) {
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new ProfileFragment());
                     selectedMenu = R.id.profile;
                     break;
-
             }
             return true;
         });

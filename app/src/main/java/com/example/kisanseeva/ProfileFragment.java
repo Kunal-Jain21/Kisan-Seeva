@@ -3,17 +3,14 @@ package com.example.kisanseeva;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.Person;
@@ -44,7 +41,7 @@ public class ProfileFragment extends Fragment {
         progressBarProfile.setVisibility(View.VISIBLE);
         Utility.getDocumentReferenceOfUser(Utility.getCurrentUser().getUid()).get().addOnSuccessListener(documentSnapshot -> {
             editPerson = documentSnapshot.toObject(Person.class);
-            String name = editPerson.getFirstName()+" "+editPerson.getLastName();
+            String name = editPerson.getFirstName() + " " + editPerson.getLastName();
             nameOfUser.setText(name);
             Uri uri2 = Uri.parse(editPerson.getProfileImg());
             Glide.with(this).load(uri2).into(profileImg);
@@ -96,7 +93,7 @@ public class ProfileFragment extends Fragment {
 
         editProfile.setOnClickListener(view1 -> {
             Intent intent = new Intent(requireActivity(), UserInformation.class);
-            intent.putExtra("edit",true);
+            intent.putExtra("edit", true);
             startActivity(intent);
         });
         return view;

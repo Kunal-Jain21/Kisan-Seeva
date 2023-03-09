@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +28,6 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-//TODO : Show progress bar while adding to avoid duplicate addition
 public class AddProduct extends AppCompatActivity {
 
     private EditText nameEditText, descEditText, priceEditText;
@@ -38,6 +38,8 @@ public class AddProduct extends AppCompatActivity {
     Button submit_btn;
     String prod_name, prod_desc, prod_price;
     Spinner category_spinner;
+
+    ProgressBar progressBarAddProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class AddProduct extends AppCompatActivity {
         priceEditText = findViewById(R.id.machine_price);
         submit_btn = findViewById(R.id.submit_button);
         category_spinner = findViewById(R.id.category_spinner);
+        progressBarAddProduct = findViewById(R.id.progressBarAddProduct);
 
         ArrayList<String> category = new ArrayList<String>(
                 Arrays.asList("Please Select a Category", "Tractor", "Leaf Blower", "Motor")
@@ -76,6 +79,8 @@ public class AddProduct extends AppCompatActivity {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                submit_btn.setVisibility(View.GONE);
+                progressBarAddProduct.setVisibility(View.VISIBLE);
                 addProduct();
             }
         });

@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     Button camera, gallery;
     ImageView imageView;
     TextView result;
-    int imageSize = 32;
+    int imageSize = 224;
 
 
     @Override
@@ -118,11 +118,11 @@ public class HomeFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     private void classifyImage(Bitmap image) {
         try {
-            ImageClassifier model = ImageClassifier.newInstance(requireContext());
-//            LiteModelPlantDiseaseDefault1 model = LiteModelPlantDiseaseDefault1.newInstance(requireContext());
+//            ImageClassifier model = ImageClassifier.newInstance(requireContext());
+            LiteModelPlantDiseaseDefault1 model = LiteModelPlantDiseaseDefault1.newInstance(requireContext());
 
             // Creates inputs for reference.
-            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 32, 32, 3}, DataType.FLOAT32);
+            TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
             ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3);
             byteBuffer.order(ByteOrder.nativeOrder());
 
@@ -130,20 +130,20 @@ public class HomeFragment extends Fragment {
             image.getPixels(intValue, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
 
             int pixel = 0;
-//            for (int i = 0; i < imageSize; i++) {
-//                for (int j = 0; j < imageSize; j++) {
-//                    int val = intValue[pixel++];
-//                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255.f));
-//                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255.f));
-//                    byteBuffer.putFloat((val & 0xFF) * (1.f / 255.f));
-//                }
-//            }
+            for (int i = 0; i < imageSize; i++) {
+                for (int j = 0; j < imageSize; j++) {
+                    int val = intValue[pixel++];
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255.f));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255.f));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f / 255.f));
+                }
+            }
 
             inputFeature0.loadBuffer(byteBuffer);
             // Runs model inference and gets result.
-            ImageClassifier.Outputs outputs = model.process(inputFeature0);
+            LiteModelPlantDiseaseDefault1.Outputs  outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
+//
             float[] confidence = outputFeature0.getFloatArray();
             int maxPos = 0;
             float maxConfidence = Integer.MIN_VALUE;
@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment {
                 }
             }
             Log.v("testing", maxPos + "" + Arrays.toString(confidence));
-            String[] classes = {"Leaf", "Other"};
+//            String[] classes = {"Leaf", "Other"};
 //            String[] classes = {"aeroplane", "antelope", "badger", "bat", "bear", "bee", "beetle", "bison", "boar", "butterfly", "car", "cat", //12
 //                    "caterpillar", "chimpanzee", "cockroach", "cow", "coyote", "crab", "crow", "deer", "dog", "dolphin", "donkey", "dragonfly", // 12
 //                    "duck", "eagle", "elephant", "flamingo", "flower", "fly", "fox", "fruit", "goat", "goldfish", "goose", "gorilla", "grasshopper", //13
@@ -164,16 +164,16 @@ public class HomeFragment extends Fragment {
 //                    "raccoon", "rat", "reindeer", "rhinoceros", "sandpiper", "seahorse", "seal", "shark", "sheep", "snake", "sparrow", "squid", "squirrel",
 //                    "starfish", "swan", "tiger", "turkey", "turtle", "whale", "wolf", "wombat", "woodpecker", "zebra"};
 
-//            String[] classes = {"Apple Scab", "Black Rot", "Cedar Apple Rust", "Healthy Apple", "Healthy Blueberry",
-//                    "Powdery mildew", "Healthy Cherry", "Cercospora leaf spot Gray leaf spot",
-//                    "Common Rust", "Northern Leaf Blight", "Healthy Corn", "Black Rot", "Esac (Black Measles)",
-//                    "Leaf blight (Isariopsis Leaf Spot)", "Healthy", "Haunglongbing (Citrus greening)",
-//                    "Bacterial Spot", "Healthy Pepper Bell", "Bacterial Spot", "Healthy Peach", "Early Blight",
-//                    "Late Blight", "Healthy Potato", "Healthy Rasberry", "Healthy Soyabean", "Powdery Mildery", "Leaf Scorch",
-//                    "Healthy Strawberry", "Bacterial Spot", "Early Blight", "Late Blight", "Leaf Mold",
-//                    "Septoria Leaf Spot", "Spider Mites Two-spotted Spider Mite",
-//                    "Target Spot", "Tomato Yellow Leaf Curl Virus", "Tomato Mosaic Virus",
-//                    "Tomato Healthy"};
+            String[] classes = {"Apple Scab", "Black Rot", "Cedar Apple Rust", "Healthy Apple", "Healthy Blueberry",
+                    "Powdery mildew", "Healthy Cherry", "Cercospora leaf spot Gray leaf spot",
+                    "Common Rust", "Northern Leaf Blight", "Healthy Corn", "Black Rot", "Esac (Black Measles)",
+                    "Leaf blight (Isariopsis Leaf Spot)", "Healthy", "Haunglongbing (Citrus greening)",
+                    "Bacterial Spot", "Healthy Pepper Bell", "Bacterial Spot", "Healthy Peach", "Early Blight",
+                    "Late Blight", "Healthy Potato", "Healthy Rasberry", "Healthy Soyabean", "Powdery Mildery", "Leaf Scorch",
+                    "Healthy Strawberry", "Bacterial Spot", "Early Blight", "Late Blight", "Leaf Mold",
+                    "Septoria Leaf Spot", "Spider Mites Two-spotted Spider Mite",
+                    "Target Spot", "Tomato Yellow Leaf Curl Virus", "Tomato Mosaic Virus",
+                    "Tomato Healthy"};
 
             result.setText(" " + classes[maxPos]);
             Arrays.fill(confidence, 0);
@@ -181,7 +181,7 @@ public class HomeFragment extends Fragment {
             // Releases model resources if no longer used.
             model.close();
         } catch (IOException e) {
-            // TODO Handle the exception
+            //  TODO Handle the exception
         }
     }
 }

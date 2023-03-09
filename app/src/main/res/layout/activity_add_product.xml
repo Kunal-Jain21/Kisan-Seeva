@@ -81,4 +81,13 @@
         app:layout_constraintTop_toBottomOf="@id/machine_price"
         tools:ignore="MissingConstraints" />
 
+    <ProgressBar
+        android:id="@+id/progressBarAddProduct"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/machine_price"
+        android:visibility="gone"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
