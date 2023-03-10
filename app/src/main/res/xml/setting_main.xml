@@ -5,8 +5,6 @@
 
     <ListPreference android:title="Select State"
         android:defaultValue="All"
-        android:entries="@array/settings_select_state"
-        android:entryValues="@array/settings_select_state"
         android:key="select_state"
         />
 

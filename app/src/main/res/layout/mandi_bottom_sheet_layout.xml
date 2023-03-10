@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/filterHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Filter State's"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/filterHeading"
+        android:background="#e4e4e4" />
+
+    <!--  State  -->
+    <TextView
+        android:id="@+id/stateLabelTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:padding="5dp"
+        android:paddingStart="10dp"
+        android:text="Select State"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/newStateSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stateLabelTv"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:entries="@array/india_states"
+        android:entryValues="@array/india_states"
+        android:padding="5dp" />
+
+    <Button
+        android:id="@+id/applyBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newStateSpinner"
+        android:layout_marginTop="5dp"
+        android:background="#E91E63"
+        android:text="Apply"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

@@ -23,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.kisanseeva.ml.ImageClassifier;
 import com.example.kisanseeva.ml.LiteModelPlantDiseaseDefault1;
 
 import org.tensorflow.lite.DataType;
