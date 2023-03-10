@@ -2,6 +2,10 @@ package com.example.kisanseeva.Renting.TakeOnRent;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,9 +24,9 @@ public class RentedProductList extends AppCompatActivity {
     ProductListAdapter productListAdapter;
     private String equipmentName;
     private ArrayList<ProductModel> rentedProduct;
+    ProgressBar progressBar;
+    TextView failureText;
 
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +35,8 @@ public class RentedProductList extends AppCompatActivity {
         recycle = findViewById(R.id.rented_product_list);
         equipmentName = getIntent().getStringExtra("equipmentName");
         rentedProduct = new ArrayList<>();
-
+        progressBar = findViewById(R.id.mandiProgressBar);
+        failureText = findViewById(R.id.failureText);
         setRecyclerView();
 //        getData();
     }
@@ -50,7 +55,7 @@ public class RentedProductList extends AppCompatActivity {
 
     private void getData() {
         rentedProduct.clear();
-
+        progressBar.setVisibility(View.VISIBLE);
         ArrayList<String> requestList = new ArrayList<>();
         Utility.getCollectionReferenceForSentRequest().get().addOnSuccessListener(documentSnapshot -> {
             for (DocumentSnapshot docSnap : documentSnapshot) {
@@ -61,12 +66,24 @@ public class RentedProductList extends AppCompatActivity {
                 Utility.getCollectionReferenceForRentedProduct().whereEqualTo("category", equipmentName)
                         .whereNotEqualTo("giver_id", Utility.getCurrentUser().getUid())
                         .get().addOnSuccessListener(documentSnapshots -> {
-                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                                ProductModel curr = documentSnapshot.toObject(ProductModel.class);
-                                if (!requestList.contains(curr.getProd_id())) {
-                                    rentedProduct.add(curr);
-                                    productListAdapter.notifyDataSetChanged();
+                            if (documentSnapshots.isEmpty()) {
+                                Log.v("testing", "Line 70");
+                                progressBar.setVisibility(View.INVISIBLE);
+                                failureText.setVisibility(View.VISIBLE);
+                            } else {
+                                Log.v("testing", "Line 74");
+                                failureText.setVisibility(View.INVISIBLE);
+                                for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                                    ProductModel curr = documentSnapshot.toObject(ProductModel.class);
+                                    if (!requestList.contains(curr.getProd_id())) {
+                                        rentedProduct.add(curr);
+                                        productListAdapter.notifyDataSetChanged();
+                                    }
                                 }
+                                if(rentedProduct.size() == 0) {
+                                    failureText.setVisibility(View.VISIBLE);
+                                }
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
             }

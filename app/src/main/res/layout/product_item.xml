@@ -7,29 +7,66 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="5sp"
+        android:layout_marginEnd="5sp"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="8dp"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profileImg"
+                    android:layout_width="38sp"
+                    android:layout_height="40sp"
+                    android:padding="2sp"
+                    app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                    app:srcCompat="@drawable/person"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2dp" />
+
+                <TextView
+                    android:id="@+id/person_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10sp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Person Name" />
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/product_img"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="125sp"
+                android:minHeight="100sp"
+                android:maxHeight="15sp"
                 android:src="@drawable/irrigation" />
 
             <TextView
                 android:id="@+id/prod_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 android:text="Product name" />
 
             <TextView
                 android:id="@+id/prod_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:padding="2dp"
                 android:text="Description" />
 
             <LinearLayout
@@ -39,14 +76,16 @@
                 <TextView
                     android:id="@+id/prod_price"
                     android:layout_width="0dp"
-                    android:layout_weight="0.7"
+                    android:layout_weight="0.6"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"
                     android:text="Price" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/requestButton"
                     android:layout_width="0dp"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.4"
                     android:layout_height="wrap_content"
                     android:text="Request"
                     android:layout_marginEnd="20dp"

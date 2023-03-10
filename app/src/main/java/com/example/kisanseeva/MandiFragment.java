@@ -46,9 +46,7 @@ public class MandiFragment extends Fragment {
 
     String selectedState = "All";
     int selectedStatePosition = 0;
-
     ProgressBar mandiProgressBar;
-
     TextView failureText;
 
 

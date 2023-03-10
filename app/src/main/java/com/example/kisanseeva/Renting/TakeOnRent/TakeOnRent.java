@@ -47,16 +47,12 @@ public class TakeOnRent extends Fragment {
         rentModelArrayList.add(new TakeOnRentModel("Irrigation", R.drawable.irrigation));
         rentModelArrayList.add(new TakeOnRentModel("Pressure Washer", R.drawable.pressure_washer));
         rentModelArrayList.add(new TakeOnRentModel("Motor", R.drawable.motor));
-        rentModelArrayList.add(new TakeOnRentModel("Inter-cultivator", R.drawable.ic_baseline_home_24));
-        rentModelArrayList.add(new TakeOnRentModel("Engine", R.drawable.ic_baseline_home_24));
-        rentModelArrayList.add(new TakeOnRentModel("Harvester", R.drawable.ic_baseline_home_24));
-        rentModelArrayList.add(new TakeOnRentModel("Water pump", R.drawable.ic_baseline_home_24));
-        rentModelArrayList.add(new TakeOnRentModel("Sprayer", R.drawable.ic_baseline_home_24));
-
-        rentModelArrayList.add(new TakeOnRentModel("Seeder-Transplanter", R.drawable.ic_baseline_home_24));
-        rentModelArrayList.add(new TakeOnRentModel("Brush cutter", R.drawable.ic_baseline_home_24));
-        rentModelArrayList.add(new TakeOnRentModel("Chainsaw", R.drawable.ic_baseline_home_24));
-        rentModelArrayList.add(new TakeOnRentModel("Dairy", R.drawable.ic_baseline_home_24));
+        rentModelArrayList.add(new TakeOnRentModel("Sprayer", R.drawable.sprayer));
+        rentModelArrayList.add(new TakeOnRentModel("Chainsaw", R.drawable.chain_saw));
+        rentModelArrayList.add(new TakeOnRentModel("Water pump", R.drawable.water_pump));
+        rentModelArrayList.add(new TakeOnRentModel("Harvester", R.drawable.harvester));
+        rentModelArrayList.add(new TakeOnRentModel("Cutter", R.drawable.cutter));
+        rentModelArrayList.add(new TakeOnRentModel("Chaff Cutter", R.drawable.chaff_cutter));
 
         gridTools = view.findViewById(R.id.gridTools);
         gridTools.setOnItemClickListener((adapterView, view1, i, l) -> {
