@@ -69,16 +69,6 @@
 
         </androidx.cardview.widget.CardView>
 
-        <Spinner
-            android:id="@+id/languageSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:fadeScrollbars="false"
-            android:spinnerMode="dialog"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile" />
 
         <Button
             android:id="@+id/requestedProduct"
@@ -92,7 +82,7 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/languageSpinner" />
+            app:layout_constraintTop_toBottomOf="@id/profile" />
 
 
         <Button

@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/productItem"
+    android:background="@drawable/rectangular_border"
+    android:layout_margin="5sp"
     android:padding="10dp">
 
     <ImageView
@@ -16,7 +18,7 @@
         android:src="@drawable/gallery" />
 
     <LinearLayout
-        android:layout_weight=".6"
+        android:layout_weight=".4"
         android:layout_width="wrap_content"
         android:padding="5dp"
         android:layout_height="wrap_content"
@@ -24,19 +26,26 @@
 
         <TextView
             android:id="@+id/prod_name"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Product Name" />
 
         <TextView
             android:id="@+id/prod_desc"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Product Description" />
+            android:textSize="16sp"
+            android:maxLines="2"
+            android:maxLength="50"
+            android:text="Product DescriptionProduct DescriptionDescriptionProduct Description" />
+
 
         <TextView
             android:id="@+id/prod_price"
             android:layout_width="wrap_content"
+            android:textSize="17sp"
             android:layout_height="wrap_content"
             android:text="Product Price" />
 
@@ -44,11 +53,13 @@
 
     <TextView
         android:id="@+id/statusTextView"
-        android:layout_weight="0.4"
+        android:layout_weight="0.35"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="8sp"
-        android:text="Status"/>
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+        android:text="Pending"/>
 
 </LinearLayout>

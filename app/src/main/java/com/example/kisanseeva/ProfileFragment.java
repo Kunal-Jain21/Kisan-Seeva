@@ -1,8 +1,9 @@
 package com.example.kisanseeva;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,9 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.Person;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import android.widget.ProgressBar;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileFragment extends Fragment {
 
@@ -31,10 +29,6 @@ public class ProfileFragment extends Fragment {
     Button requestedProduct,logoutBtn;
     ProgressBar progressBar, progressBarProfile;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -43,22 +37,17 @@ public class ProfileFragment extends Fragment {
             editPerson = documentSnapshot.toObject(Person.class);
             String name = editPerson.getFirstName() + " " + editPerson.getLastName();
             nameOfUser.setText(name);
-            Glide.with(requireActivity()).load(editPerson.getProfileImg()).into(profileImg);
+            Activity activity = getActivity();
+            if (isAdded() && activity != null) {
+                try {
+                    Glide.with(requireActivity()).load(editPerson.getProfileImg()).into(profileImg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
         });
         progressBarProfile.setVisibility(View.GONE);
-    }
-
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -91,9 +80,10 @@ public class ProfileFragment extends Fragment {
         });
 
         editProfile.setOnClickListener(view1 -> {
+            Log.v("testing", "Kunal Jain");
             Intent intent = new Intent(requireActivity(), UserInformation.class);
             intent.putExtra("edit", true);
-            startActivity(intent);
+            requireActivity().startActivity(intent);
         });
         return view;
     }

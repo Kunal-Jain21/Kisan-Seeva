@@ -55,9 +55,10 @@ public class UserInformation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
+        Log.v("testing", "aksdvasv Kunal");
         Intent intent = getIntent();
         boolean isEdit = intent.getBooleanExtra("edit", false);
-        Log.v("testing", "" + isEdit);
+        Log.v("testing", "aksdvasv" + isEdit);
 
         profileImg = findViewById(R.id.profileImg);
         uploadImage = findViewById(R.id.uploadImage);
@@ -165,9 +166,8 @@ public class UserInformation extends AppCompatActivity {
     }
 
     private void setStateSpinner() {
-        ArrayList<String> stateArray = new ArrayList<String>(
-                Arrays.asList("Select State", "Maharashtra")
-        );
+        String[] stateArray = getResources().getStringArray(R.array.india_states);
+        stateArray[0] = "Select State";
 
         stateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stateArray);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

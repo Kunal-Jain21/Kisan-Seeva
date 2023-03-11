@@ -3,7 +3,6 @@ package com.example.kisanseeva;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 
@@ -28,36 +27,34 @@ public class RequestedProductActivity extends AppCompatActivity {
         requestedProductList = new ArrayList<>();
         decision = new ArrayList<>();
 
-        setData();
-        Log.v("testing", "Line 32");
         requestedProductAdapter = new RequestedProductAdapter(this, requestedProductList, decision);
-        Log.v("testing", "Line 34");
         requestedProductRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.v("testing", "Line 36");
         requestedProductRecyclerView.setAdapter(requestedProductAdapter);
-        Log.v("testing", "Line 38");
-
-        requestedProductAdapter.notifyDataSetChanged();
+        getData();
     }
 
-    private void setData() {
-//        rentedProduct.clear();
+    private void getData() {
+        requestedProductList.clear();
 
         Utility.getCollectionReferenceForSentRequest().get().addOnSuccessListener(documentSnapshots -> {
             for (DocumentSnapshot currentRequestDocument : documentSnapshots) {
-                Utility.getCollectionReferenceForRentedProduct().document(currentRequestDocument.get("productId").toString())
+                Utility.getCollectionReferenceForRentedProduct().document((String) currentRequestDocument.get("productId"))
                         .get().addOnSuccessListener(currentProduct -> {
                             ProductModel curr = currentProduct.toObject(ProductModel.class);
+                            Log.v("test", curr.getProd_id());
                             requestedProductList.add(curr);
-                        });
 
-                Utility.getCollectionReferenceForApplication(currentRequestDocument.get("productId").toString())
-                        .document(currentRequestDocument.getId()).get()
-                        .addOnSuccessListener(currentApplication -> {
-                            decision.add((String) currentApplication.get("isApproved"));
-                            requestedProductAdapter.notifyDataSetChanged();
+                            Utility.getCollectionReferenceForApplication(currentRequestDocument.get("productId").toString())
+                                    .document(currentRequestDocument.getId()).get()
+                                    .addOnSuccessListener(currentApplication -> {
+                                        Log.v("test", currentApplication.getId());
+                                        decision.add((String) currentApplication.get("isApproved"));
+                                        Log.v("testing", requestedProductList.size()+"");
+                                        requestedProductAdapter.notifyDataSetChanged();
+                                    });
                         });
             }
         });
+
     }
 }
