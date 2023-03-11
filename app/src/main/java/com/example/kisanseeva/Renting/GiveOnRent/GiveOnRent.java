@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -12,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kisanseeva.R;
-import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.ProductListAdapter;
+import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.AcceptOrRejectApplication;
 import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.ProductRequestActivity;
 import com.example.kisanseeva.Renting.GiveOnRent.ProductAddition.AddProduct;
 import com.example.kisanseeva.Utility;
@@ -27,6 +29,8 @@ public class GiveOnRent extends Fragment implements productListener {
     RecyclerView recyclerView;
     ArrayList<ProductModel> rentedProduct;
     ProductListAdapter productListAdapter;
+    TextView emptyPostTv;
+    ProgressBar postProgressBar;
 
 
     @Override
@@ -41,7 +45,8 @@ public class GiveOnRent extends Fragment implements productListener {
         View view = inflater.inflate(R.layout.fragment_give_on_rent, container, false);
         fab = view.findViewById(R.id.fab);
         recyclerView = view.findViewById(R.id.rented_product_list);
-
+        emptyPostTv = view.findViewById(R.id.emptyPostTv);
+        postProgressBar = view.findViewById(R.id.postProgressBar);
         // Fab button
         fab.setOnClickListener(view1 -> startActivity(new Intent(getActivity(), AddProduct.class)));
 
@@ -53,7 +58,7 @@ public class GiveOnRent extends Fragment implements productListener {
 
     private void setRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        productListAdapter = new ProductListAdapter(getContext(), rentedProduct,this);
+        productListAdapter = new ProductListAdapter(getContext(), rentedProduct, this);
         recyclerView.setAdapter(productListAdapter);
     }
 
@@ -66,18 +71,25 @@ public class GiveOnRent extends Fragment implements productListener {
 
     private void setData() {
         rentedProduct.clear();
-
+        postProgressBar.setVisibility(View.VISIBLE);
         Utility.getDocumentReferenceOfUser().collection("my_product").get()
                 .addOnSuccessListener(documentSnapshots -> {
-
-                    for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
-                        String id = Objects.requireNonNull(documentSnapshot.get("prodId")).toString();
-                        Utility.getCollectionReferenceForRentedProduct().document(id)
-                                .get().addOnSuccessListener(documentSnapshot1 -> {
-                                    ProductModel curr = documentSnapshot1.toObject(ProductModel.class);
-                                    rentedProduct.add(curr);
-                                    productListAdapter.notifyDataSetChanged();
-                                });
+                    if (documentSnapshots.isEmpty()) {
+                        postProgressBar.setVisibility(View.INVISIBLE);
+                        emptyPostTv.setText("No Product added for Rent");
+                        emptyPostTv.setVisibility(View.VISIBLE);
+                    } else {
+                        for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
+                            String id = Objects.requireNonNull(documentSnapshot.get("prodId")).toString();
+                            Utility.getCollectionReferenceForRentedProduct().document(id)
+                                    .get().addOnSuccessListener(documentSnapshot1 -> {
+                                        ProductModel curr = documentSnapshot1.toObject(ProductModel.class);
+                                        rentedProduct.add(curr);
+                                        productListAdapter.notifyDataSetChanged();
+                                    });
+                        }
+                        postProgressBar.setVisibility(View.INVISIBLE);
+                        emptyPostTv.setVisibility(View.INVISIBLE);
                     }
                 });
     }
@@ -124,7 +136,7 @@ public class GiveOnRent extends Fragment implements productListener {
                 }
             });
         });
-
+        setData();
     }
 
 
@@ -134,4 +146,5 @@ public class GiveOnRent extends Fragment implements productListener {
         intent.putExtra("prod_id", prod_id);
         startActivity(intent);
     }
+
 }

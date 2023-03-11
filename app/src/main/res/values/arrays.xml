@@ -34,4 +34,21 @@
         <item>Uttar Pradesh</item>
         <item>West Bengal</item>
     </string-array>
+
+    <string-array name="category">
+        <item>Select Category</item>
+        <item>Hedge Trimmer</item>
+        <item>Lawn Motor</item>
+        <item>Leaf Blower</item>
+        <item>Hand Tools</item>
+        <item>Irrigation</item>
+        <item>Pressure Washer</item>
+        <item>Motor</item>
+        <item>Sprayer</item>
+        <item>ChainSaw</item>
+        <item>Water Pump</item>
+        <item>Harvester</item>
+        <item>Cutter</item>
+        <item>Chaff Cutter</item>
+    </string-array>
 </resources>

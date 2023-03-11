@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,14 +20,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ProductRequestActivity extends AppCompatActivity implements AcceptOrRejectApplication{
+public class ProductRequestActivity extends AppCompatActivity implements AcceptOrRejectApplication {
 
     RecyclerView person_request_list;
     RequestListAdapter requestListAdapter;
     ArrayList<Person> requesterList;
     String prod_id;
     private ImageView product_img;
-    TextView prod_name, prod_desc, prod_price;
+    TextView prod_name, prod_desc, prod_price, emptyRequestTv;
     private ArrayList<String> applicationIdList, applicationStatusList;
 
     @Override
@@ -41,6 +42,7 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
         prod_desc = findViewById(R.id.prod_desc);
         prod_price = findViewById(R.id.prod_price);
         product_img = findViewById(R.id.product_img);
+        emptyRequestTv = findViewById(R.id.emptyRequestTv);
         setData();
         requesterList = new ArrayList<>();
         applicationIdList = new ArrayList<>();
@@ -48,7 +50,7 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
         getData();
 
         person_request_list = findViewById(R.id.person_request_list);
-        requestListAdapter = new RequestListAdapter(this, requesterList,this,applicationStatusList);
+        requestListAdapter = new RequestListAdapter(this, requesterList, this, applicationStatusList);
         person_request_list.setLayoutManager(new LinearLayoutManager(this));
         person_request_list.setAdapter(requestListAdapter);
         requestListAdapter.notifyDataSetChanged();
@@ -68,16 +70,21 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
 
     void getData() {
         Utility.getCollectionReferenceForApplication(prod_id).get().addOnSuccessListener(documentSnapshots -> {
-            for (DocumentSnapshot doc : documentSnapshots) {
-                applicationStatusList.add((String) doc.get("isApproved"));
-                applicationIdList.add(doc.getId());
-                Log.v("testing66", "id "+String.valueOf(doc.get("requestUserId")));
-                Log.v("testing74", "status "+String.valueOf(doc.get("isApproved")));
-                Utility.getDocumentReferenceOfUser(String.valueOf(doc.get("requestUserId")))
-                        .get().addOnSuccessListener(documentSnapshot -> {
-                            requesterList.add(documentSnapshot.toObject(Person.class));
-                            requestListAdapter.notifyDataSetChanged();
-                        });
+            if (documentSnapshots.isEmpty()) {
+                emptyRequestTv.setText("No Request for this Product");
+                emptyRequestTv.setVisibility(View.VISIBLE);
+            } else {
+                for (DocumentSnapshot doc : documentSnapshots) {
+
+
+                    applicationStatusList.add((String) doc.get("isApproved"));
+                    applicationIdList.add(doc.getId());
+                    Utility.getDocumentReferenceOfUser(String.valueOf(doc.get("requestUserId")))
+                            .get().addOnSuccessListener(documentSnapshot -> {
+                                requesterList.add(documentSnapshot.toObject(Person.class));
+                                requestListAdapter.notifyDataSetChanged();
+                            });
+                }
             }
         });
     }

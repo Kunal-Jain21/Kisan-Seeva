@@ -4,7 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/productItem"
-    android:padding="10dp">
+    android:padding="5sp"
+    android:background="@drawable/rectangular_border"
+    android:layout_marginStart="10sp"
+    android:layout_marginEnd="10sp"
+    android:layout_marginTop="5sp"
+    android:layout_marginBottom="5sp"
+    >
 
     <ImageView
         android:id="@+id/prod_img"
@@ -17,13 +23,15 @@
 
     <LinearLayout
         android:layout_weight=".7"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:padding="5dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/prod_name"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Product Name" />
@@ -32,11 +40,15 @@
             android:id="@+id/prod_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Product Description" />
+            android:textSize="16sp"
+            android:maxLines="2"
+            android:maxLength="50"
+            android:text="Product DescriptionProduct DescriptionDescriptionProduct Description" />
 
         <TextView
             android:id="@+id/prod_price"
             android:layout_width="wrap_content"
+            android:textSize="17sp"
             android:layout_height="wrap_content"
             android:text="Product Price" />
 
@@ -46,9 +58,10 @@
             android:id="@+id/deleteButton"
             android:layout_weight="0.3"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/delete"
-            android:padding="8sp"
+            android:padding="20sp"
             android:scaleType="centerCrop"
             android:contentDescription="Delete button"
             android:background="#FFFFFF"/>

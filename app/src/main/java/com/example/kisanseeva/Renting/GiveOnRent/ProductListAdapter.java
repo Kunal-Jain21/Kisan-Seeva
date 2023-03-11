@@ -1,4 +1,4 @@
-package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
+package com.example.kisanseeva.Renting.GiveOnRent;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,12 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.kisanseeva.R;
-import com.example.kisanseeva.Renting.GiveOnRent.ProductModel;
-import com.example.kisanseeva.Renting.GiveOnRent.productListener;
 
 import java.util.ArrayList;
 
@@ -50,9 +49,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productListener.deleteItem(curr.getPersonal_prod_id(),curr.getProd_id());
-                rentedProduct.remove(holder.getAdapterPosition());
-                notifyDataSetChanged();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Delete this Post?");
+
+                builder.setPositiveButton("Delete", (dialog, which) -> {
+                    rentedProduct.remove(holder.getAdapterPosition());
+                    productListener.deleteItem(curr.getPersonal_prod_id(), curr.getProd_id());
+                    notifyDataSetChanged();
+                    dialog.cancel();
+                });
+                builder.setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.cancel();
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
             }
         });
 
@@ -70,7 +81,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     }
 
 
-
     public class productAdapter extends RecyclerView.ViewHolder {
         ImageView prod_img;
         TextView prod_name, prod_price, prod_desc;
@@ -84,7 +94,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             prod_price = view.findViewById(R.id.prod_price);
             prod_desc = view.findViewById(R.id.prod_desc);
             deleteButton = view.findViewById(R.id.deleteButton);
-            productItem =view.findViewById(R.id.productItem);
+            productItem = view.findViewById(R.id.productItem);
         }
     }
 

@@ -4,15 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:layout_marginTop="5sp"
+    android:layout_marginStart="10sp"
+    android:layout_marginEnd="10sp"
+    android:background="@drawable/rectangular_border"
+    android:padding="7dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/person_img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="65sp"
+        android:layout_height="65sp"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        app:srcCompat="@drawable/person"
+        app:strokeColor="@color/black"
+        app:strokeWidth="1dp"
+        android:padding="5sp"
         android:layout_gravity="center"
-        android:padding="5dp"
-        android:src="@drawable/gallery"
+        android:src="@drawable/person"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +32,7 @@
         android:text="Person Name"
         android:paddingStart="10dp"
         android:layout_marginEnd="5dp"
-        android:textSize="25sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@id/person_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,11 +41,11 @@
     <Button
         android:id="@+id/acceptButton"
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:text="Accept offer"
+        android:text="Accept\nOffer"
+        android:textAlignment="center"
         android:scaleType="center"
-        android:src="@drawable/accept"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

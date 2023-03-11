@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5sp"
+    android:padding="5sp"
     tools:context=".Renting.GiveOnRent.ProductAddition.AddProduct">
 
     <LinearLayout
@@ -30,9 +32,10 @@
 
     <ImageButton
         android:id="@+id/img_but"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
         android:src="@drawable/gallery"
+        android:contentDescription="Upload Image"
         app:layout_constraintEnd_toEndOf="@id/image_view"
         app:layout_constraintBottom_toBottomOf="@id/image_view" />
 
@@ -40,10 +43,8 @@
         android:id="@+id/category_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="15dp"
-
+        android:popupBackground="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image_view"
         />
