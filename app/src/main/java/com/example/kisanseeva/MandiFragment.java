@@ -1,5 +1,8 @@
 package com.example.kisanseeva;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -70,8 +73,19 @@ public class MandiFragment extends Fragment {
         cropAdapter = new CropAdapter(cropArrayList, getContext());
         recycle.setAdapter(cropAdapter);
         recycle.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-        getCrop();
-        cropAdapter.notifyDataSetChanged();
+
+        requireContext();
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected()){
+            getCrop();
+            cropAdapter.notifyDataSetChanged();
+        }else{
+            mandiProgressBar.setVisibility(View.GONE);
+            failureText.setText("No Internet Connection");
+            failureText.setVisibility(View.VISIBLE);
+
+        }
 
         return view;
     }
@@ -156,7 +170,6 @@ public class MandiFragment extends Fragment {
     }
 
     public void getCrop() {
-        mandiProgressBar.setVisibility(View.VISIBLE);
         cropArrayList.clear();
         String base_url = "https://data.gov.in/";
         String url = "";
@@ -177,13 +190,14 @@ public class MandiFragment extends Fragment {
                 ArrayList<Crop> crop = cropModel.getRecords();
                 if (crop.size() == 0) {
                     mandiProgressBar.setVisibility(View.INVISIBLE);
+                    failureText.setText("No data to display");
                     failureText.setVisibility(View.VISIBLE);
                 } else {
                     failureText.setVisibility(View.INVISIBLE);
                     for (int i = 0; i < crop.size(); i++) {
                         cropArrayList.add(new Crop(crop.get(i).getState(),
                                 crop.get(i).getMarket(), crop.get(i).getCommodity(),
-                                crop.get(i).getArrival_date(), crop.get(i).getModal_price()));
+                                crop.get(i).getArrival_date(), crop.get(i).getModal_price()+"/qq"));
                     }
                     mandiProgressBar.setVisibility(View.INVISIBLE);
                 }
@@ -201,4 +215,12 @@ public class MandiFragment extends Fragment {
         });
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+////        getCrop();
+////        cropAdapter.notifyDataSetChanged();
+////        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+//        Toast.makeText(getContext(),"Reached here",Toast.LENGTH_SHORT).show();
+//    }
 }

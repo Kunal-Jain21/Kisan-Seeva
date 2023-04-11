@@ -40,6 +40,19 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        binding.bottomNav.setOnItemReselectedListener(Item -> {
+            switch (Item.getItemId()) {
+                case R.id.home:
+                    break;
+                case R.id.mandi:
+                    break;
+                case R.id.renting:
+                    break;
+                case R.id.profile:
+                    break;
+            }
+        });
+
     }
 
     private void replaceFragment(Fragment fragment) {

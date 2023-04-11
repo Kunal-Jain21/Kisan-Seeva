@@ -1,12 +1,10 @@
 package com.example.kisanseeva;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,8 +18,8 @@ import java.util.ArrayList;
 public class RequestedProductAdapter extends RecyclerView.Adapter<RequestedProductAdapter.RequestedProductViewHolder> {
 
     Context context;
-    ArrayList<ProductModel>  requestedProductList;
-    ArrayList<String>  decisionArrayList;
+    ArrayList<ProductModel> requestedProductList;
+    ArrayList<String> decisionArrayList;
 
     public RequestedProductAdapter(Context context, ArrayList<ProductModel> requestedProductList, ArrayList<String> decisionArrayList) {
         this.context = context;
@@ -39,7 +37,7 @@ public class RequestedProductAdapter extends RecyclerView.Adapter<RequestedProdu
     @Override
     public void onBindViewHolder(@NonNull RequestedProductViewHolder holder, int index) {
         ProductModel curr = requestedProductList.get(index);
-        Log.v("testing1", curr.getProd_id());
+//        Log.v("testing1", curr.getProd_id());
         holder.prod_name.setText(curr.getProd_name());
         holder.prod_desc.setText(curr.getProd_desc());
         holder.prod_price.setText(String.valueOf(curr.getProd_price()));
@@ -55,7 +53,7 @@ public class RequestedProductAdapter extends RecyclerView.Adapter<RequestedProdu
                 holder.statusTextView.setText("Rejected");
                 break;
             }
-            default:{
+            default: {
                 holder.statusTextView.setText("Pending");
             }
         }

@@ -18,9 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.kisanseeva.ml.LiteModelPlantDiseaseDefault1;
@@ -40,6 +43,12 @@ public class HomeFragment extends Fragment {
     TextView result;
     int imageSize = 224;
 
+    private static final int CAMERA_REQUEST_CODE = 100;
+    private static final int STORAGE_REQUEST_CODE = 200;
+
+    String[] cameraPermissions;
+    String storagePermissions[];
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,25 +60,33 @@ public class HomeFragment extends Fragment {
         result = view.findViewById(R.id.result);
         imageView = view.findViewById(R.id.imageView);
 
+        cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                    Log.v("no permission", "Camera not ready");
-//                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-//                } else {
-                Log.v("no permission2", "Camera not ready2");
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, 3);
-//                }
+                if (checkCameraPermission()) {
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, 3);
+                } else {
+                    requestCameraPermission();
+                }
             }
         });
 
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(cameraIntent, 1);
+
+                if (checkStoragePermission()) {
+                    Log.v("testing", "inside if");
+                    Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(cameraIntent, 1);
+                } else {
+                    Log.v("testing1", "inside else");
+                    requestStoragePermission();
+                }
             }
         });
 
@@ -77,10 +94,58 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private boolean checkStoragePermission(){
+        boolean result = ContextCompat.checkSelfPermission(requireActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == (PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+
+    private void requestStoragePermission(){
+        Log.v("testing", "Line 104");
+        ActivityCompat.requestPermissions(requireActivity(),storagePermissions,STORAGE_REQUEST_CODE);
+        Log.v("testing", "Line 106");
+    }
+
+    private boolean checkCameraPermission(){
+        boolean result = ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.CAMERA)
+                == (PackageManager.PERMISSION_GRANTED);
+
+        boolean result1 = ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == (PackageManager.PERMISSION_GRANTED);
+        return result && result1;
+    }
+
+    private void requestCameraPermission(){
+        ActivityCompat.requestPermissions(requireActivity(),cameraPermissions,CAMERA_REQUEST_CODE);
+
+    }
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 100) {
-            if (permissions[0].equals(Manifest.permission.CAMERA)
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        switch (requestCode){
+            case CAMERA_REQUEST_CODE:{
+                if(grantResults.length > 0){
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    if(cameraAccepted && writeStorageAccepted){
+                        Log.v("testing", "given both permission");
+                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, 3);
+                    }else {
+                        Toast.makeText(getActivity(),"Please enable camera & storage permission",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            case STORAGE_REQUEST_CODE:{
+                Log.v("testing", "Line 135");
+                if(grantResults.length > 0){
+                    Log.v("testing", "Line 139");
+                    boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if(writeStorageAccepted){
+                        Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(cameraIntent, 1);
+                    }else {
+                        Toast.makeText(getActivity(),"Please enable storage permission",Toast.LENGTH_SHORT).show();
+                    }
+                }
 
             }
         }

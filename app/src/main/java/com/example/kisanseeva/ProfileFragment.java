@@ -26,7 +26,7 @@ public class ProfileFragment extends Fragment {
     Person editPerson;
     CircleImageView profileImg;
     TextView nameOfUser;
-    Button requestedProduct,logoutBtn;
+    Button requestedProduct,logoutBtn,aboutUs;
     ProgressBar progressBar, progressBarProfile;
 
     @Override
@@ -61,9 +61,14 @@ public class ProfileFragment extends Fragment {
         nameOfUser = view.findViewById(R.id.nameOfUser);
         progressBarProfile = view.findViewById(R.id.progressBarProfile);
         logoutBtn = view.findViewById(R.id.logoutBtn);
+        aboutUs = view.findViewById(R.id.aboutUs);
 
         requestedProduct.setOnClickListener(view1 -> {
             startActivity(new Intent(requireActivity(), RequestedProductActivity.class));
+        });
+
+        aboutUs.setOnClickListener(view1 -> {
+            startActivity(new Intent(requireActivity(), AboutUs.class));
         });
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override

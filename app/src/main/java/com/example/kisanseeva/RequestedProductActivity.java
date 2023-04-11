@@ -41,7 +41,7 @@ public class RequestedProductActivity extends AppCompatActivity {
                 Utility.getCollectionReferenceForRentedProduct().document((String) currentRequestDocument.get("productId"))
                         .get().addOnSuccessListener(currentProduct -> {
                             ProductModel curr = currentProduct.toObject(ProductModel.class);
-                            Log.v("test", curr.getProd_id());
+//                            Log.v("test", curr.getProd_id());
                             requestedProductList.add(curr);
 
                             Utility.getCollectionReferenceForApplication(currentRequestDocument.get("productId").toString())

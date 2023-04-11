@@ -10,7 +10,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -32,10 +32,9 @@
             android:id="@+id/failureText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="No data to display"
             android:textSize="20sp"
             android:gravity="center"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
