@@ -7,7 +7,7 @@
     tools:context=".Renting.TakeOnRent.RentedProductList">
 
     <ProgressBar
-        android:id="@+id/mandiProgressBar"
+        android:id="@+id/rentedProgressBar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"

@@ -1,6 +1,9 @@
 package com.example.kisanseeva.Renting.GiveOnRent;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kisanseeva.R;
-import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.AcceptOrRejectApplication;
 import com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct.ProductRequestActivity;
 import com.example.kisanseeva.Renting.GiveOnRent.ProductAddition.AddProduct;
 import com.example.kisanseeva.Utility;
@@ -29,7 +31,7 @@ public class GiveOnRent extends Fragment implements productListener {
     RecyclerView recyclerView;
     ArrayList<ProductModel> rentedProduct;
     ProductListAdapter productListAdapter;
-    TextView emptyPostTv;
+    TextView failurePostTv;
     ProgressBar postProgressBar;
 
 
@@ -45,7 +47,7 @@ public class GiveOnRent extends Fragment implements productListener {
         View view = inflater.inflate(R.layout.fragment_give_on_rent, container, false);
         fab = view.findViewById(R.id.fab);
         recyclerView = view.findViewById(R.id.rented_product_list);
-        emptyPostTv = view.findViewById(R.id.emptyPostTv);
+        failurePostTv = view.findViewById(R.id.failurePostTv);
         postProgressBar = view.findViewById(R.id.postProgressBar);
         // Fab button
         fab.setOnClickListener(view1 -> startActivity(new Intent(getActivity(), AddProduct.class)));
@@ -66,18 +68,26 @@ public class GiveOnRent extends Fragment implements productListener {
     @Override
     public void onStart() {
         super.onStart();
-        setData();
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected()){
+            getData();
+            productListAdapter.notifyDataSetChanged();
+        }else{
+            postProgressBar.setVisibility(View.GONE);
+            failurePostTv.setText("No Internet Connection");
+            failurePostTv.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void setData() {
+    private void getData() {
         rentedProduct.clear();
-        postProgressBar.setVisibility(View.VISIBLE);
         Utility.getDocumentReferenceOfUser().collection("my_product").get()
                 .addOnSuccessListener(documentSnapshots -> {
                     if (documentSnapshots.isEmpty()) {
                         postProgressBar.setVisibility(View.INVISIBLE);
-                        emptyPostTv.setText("No Product added for Rent");
-                        emptyPostTv.setVisibility(View.VISIBLE);
+                        failurePostTv.setText("No Product added for Rent");
+                        failurePostTv.setVisibility(View.VISIBLE);
                     } else {
                         for (DocumentSnapshot documentSnapshot : documentSnapshots.getDocuments()) {
                             String id = Objects.requireNonNull(documentSnapshot.get("prodId")).toString();
@@ -89,7 +99,8 @@ public class GiveOnRent extends Fragment implements productListener {
                                     });
                         }
                         postProgressBar.setVisibility(View.INVISIBLE);
-                        emptyPostTv.setVisibility(View.INVISIBLE);
+                        failurePostTv.setText("No Product added for Rent");
+                        failurePostTv.setVisibility(View.INVISIBLE);
                     }
                 });
     }
@@ -136,7 +147,7 @@ public class GiveOnRent extends Fragment implements productListener {
                 }
             });
         });
-        setData();
+        getData();
     }
 
 

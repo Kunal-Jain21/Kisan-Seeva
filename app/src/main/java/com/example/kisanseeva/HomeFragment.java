@@ -236,7 +236,7 @@ public class HomeFragment extends Fragment {
                     "Tomato Septoria Leaf Spot", "Tomato Spider Mites Two-spotted Spider Mite",
                     "Tomato Target Spot", "Tomato Mosaic Virus", "Tomato Yellow Leaf Curl Virus"};
 
-            result.setText(" " + classes[maxPos]);
+            result.setText(" " + classes[maxPos] );
             Arrays.fill(confidence, 0);
 //            Log.v("Prediction", String.valueOf(outputs));
             // Releases model resources if no longer used.

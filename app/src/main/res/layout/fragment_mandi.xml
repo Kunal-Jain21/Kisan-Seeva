@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".MandiFragment">
 
+
+
+
     <ProgressBar
         android:id="@+id/mandiProgressBar"
         android:layout_width="40dp"
@@ -27,6 +30,19 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/mandi_price_item" >
         </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="qq -> Quital (क्विंटल)"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:background="#5A5656"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:textAlignment="center"
+            />
 
         <TextView
             android:id="@+id/failureText"

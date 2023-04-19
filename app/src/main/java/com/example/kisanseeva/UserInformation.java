@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -59,6 +60,10 @@ public class UserInformation extends AppCompatActivity {
         Intent intent = getIntent();
         boolean isEdit = intent.getBooleanExtra("edit", false);
         Log.v("testing", "aksdvasv" + isEdit);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
 
         profileImg = findViewById(R.id.profileImg);
         uploadImage = findViewById(R.id.uploadImage);
@@ -154,6 +159,12 @@ public class UserInformation extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
     @Override

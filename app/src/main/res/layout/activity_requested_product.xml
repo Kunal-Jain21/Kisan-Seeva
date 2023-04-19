@@ -25,4 +25,24 @@
         app:layout_constraintTop_toBottomOf="@id/name"
         tools:listitem="@layout/requested_product_item" />
 
+    <ProgressBar
+        android:id="@+id/rentedProgressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/failureText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No product added by other"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:visibility="invisible"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

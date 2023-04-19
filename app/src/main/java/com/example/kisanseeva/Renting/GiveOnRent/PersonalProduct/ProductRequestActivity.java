@@ -1,5 +1,6 @@
 package com.example.kisanseeva.Renting.GiveOnRent.PersonalProduct;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,10 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_request);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
         product_img = findViewById(R.id.product_img);
 
         prod_id = getIntent().getStringExtra("prod_id");
@@ -55,6 +60,12 @@ public class ProductRequestActivity extends AppCompatActivity implements AcceptO
         person_request_list.setAdapter(requestListAdapter);
         requestListAdapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
     void setData() {

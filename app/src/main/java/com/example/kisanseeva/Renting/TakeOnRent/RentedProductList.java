@@ -1,12 +1,16 @@
 package com.example.kisanseeva.Renting.TakeOnRent;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,19 +36,39 @@ public class RentedProductList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rented_product_list);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
         recycle = findViewById(R.id.rented_product_list);
         equipmentName = getIntent().getStringExtra("equipmentName");
         rentedProduct = new ArrayList<>();
-        progressBar = findViewById(R.id.mandiProgressBar);
+        progressBar = findViewById(R.id.rentedProgressBar);
         failureText = findViewById(R.id.failureText);
         setRecyclerView();
-//        getData();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        getData();
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected()){
+            getData();
+            productListAdapter.notifyDataSetChanged();
+        }else{
+            progressBar.setVisibility(View.GONE);
+            failureText.setText("No Internet Connection");
+            failureText.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void setRecyclerView() {
@@ -69,6 +93,7 @@ public class RentedProductList extends AppCompatActivity {
                             if (documentSnapshots.isEmpty()) {
                                 Log.v("testing", "Line 70");
                                 progressBar.setVisibility(View.INVISIBLE);
+                                failureText.setText("No product added by other");
                                 failureText.setVisibility(View.VISIBLE);
                             } else {
                                 Log.v("testing", "Line 74");
@@ -81,6 +106,7 @@ public class RentedProductList extends AppCompatActivity {
                                     }
                                 }
                                 if(rentedProduct.size() == 0) {
+                                    failureText.setText("No product added by other");
                                     failureText.setVisibility(View.VISIBLE);
                                 }
                                 progressBar.setVisibility(View.INVISIBLE);
