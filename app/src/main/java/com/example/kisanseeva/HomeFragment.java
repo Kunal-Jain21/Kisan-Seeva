@@ -35,17 +35,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
+    private static final int CAMERA_REQUEST_CODE = 100;
+    private static final int STORAGE_REQUEST_CODE = 200;
     Button camera, gallery;
     ImageView imageView;
     TextView result;
     int imageSize = 224;
-
-    private static final int CAMERA_REQUEST_CODE = 100;
-    private static final int STORAGE_REQUEST_CODE = 200;
-
     String[] cameraPermissions;
     String storagePermissions[];
 
@@ -60,7 +57,7 @@ public class HomeFragment extends Fragment {
         result = view.findViewById(R.id.result);
         imageView = view.findViewById(R.id.imageView);
 
-        cameraPermissions = new String[]{Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         camera.setOnClickListener(new View.OnClickListener() {
@@ -94,56 +91,57 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private boolean checkStoragePermission(){
-        boolean result = ContextCompat.checkSelfPermission(requireActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private boolean checkStoragePermission() {
+        boolean result = ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == (PackageManager.PERMISSION_GRANTED);
         return result;
     }
 
-    private void requestStoragePermission(){
+    private void requestStoragePermission() {
         Log.v("testing", "Line 104");
-        ActivityCompat.requestPermissions(requireActivity(),storagePermissions,STORAGE_REQUEST_CODE);
+        ActivityCompat.requestPermissions(requireActivity(), storagePermissions, STORAGE_REQUEST_CODE);
         Log.v("testing", "Line 106");
     }
 
-    private boolean checkCameraPermission(){
-        boolean result = ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.CAMERA)
+    private boolean checkCameraPermission() {
+        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
                 == (PackageManager.PERMISSION_GRANTED);
 
-        boolean result1 = ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        boolean result1 = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == (PackageManager.PERMISSION_GRANTED);
         return result && result1;
     }
 
-    private void requestCameraPermission(){
-        ActivityCompat.requestPermissions(requireActivity(),cameraPermissions,CAMERA_REQUEST_CODE);
+    private void requestCameraPermission() {
+        ActivityCompat.requestPermissions(requireActivity(), cameraPermissions, CAMERA_REQUEST_CODE);
 
     }
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case CAMERA_REQUEST_CODE:{
-                if(grantResults.length > 0){
+        switch (requestCode) {
+            case CAMERA_REQUEST_CODE: {
+                if (grantResults.length > 0) {
                     boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if(cameraAccepted && writeStorageAccepted){
+                    if (cameraAccepted && writeStorageAccepted) {
                         Log.v("testing", "given both permission");
                         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(cameraIntent, 3);
-                    }else {
-                        Toast.makeText(getActivity(),"Please enable camera & storage permission",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Please enable camera & storage permission", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-            case STORAGE_REQUEST_CODE:{
+            case STORAGE_REQUEST_CODE: {
                 Log.v("testing", "Line 135");
-                if(grantResults.length > 0){
+                if (grantResults.length > 0) {
                     Log.v("testing", "Line 139");
                     boolean writeStorageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if(writeStorageAccepted){
+                    if (writeStorageAccepted) {
                         Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(cameraIntent, 1);
-                    }else {
-                        Toast.makeText(getActivity(),"Please enable storage permission",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Please enable storage permission", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -205,7 +203,7 @@ public class HomeFragment extends Fragment {
 
             inputFeature0.loadBuffer(byteBuffer);
             // Runs model inference and gets result.
-            LiteModelPlantDiseaseDefault1.Outputs  outputs = model.process(inputFeature0);
+            LiteModelPlantDiseaseDefault1.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 //
             float[] confidence = outputFeature0.getFloatArray();
@@ -228,16 +226,15 @@ public class HomeFragment extends Fragment {
 //                    "raccoon", "rat", "reindeer", "rhinoceros", "sandpiper", "seahorse", "seal", "shark", "sheep", "snake", "sparrow", "squid", "squirrel",
 //                    "starfish", "swan", "tiger", "turkey", "turtle", "whale", "wolf", "wombat", "woodpecker", "zebra"};
 
-            String[] classes = {"Apple Scab", "Black Rot", "Cedar Apple Rust", "Healthy Apple", "Healthy Blueberry",
-                    "Powdery mildew", "Healthy Cherry", "Cercospora leaf spot Gray leaf spot",
-                    "Common Rust", "Northern Leaf Blight", "Healthy Corn", "Black Rot", "Esac (Black Measles)",
-                    "Leaf blight (Isariopsis Leaf Spot)", "Healthy", "Haunglongbing (Citrus greening)",
-                    "Bacterial Spot", "Healthy Pepper Bell", "Bacterial Spot", "Healthy Peach", "Early Blight",
-                    "Late Blight", "Healthy Potato", "Healthy Rasberry", "Healthy Soyabean", "Powdery Mildery", "Leaf Scorch",
-                    "Healthy Strawberry", "Bacterial Spot", "Early Blight", "Late Blight", "Leaf Mold",
-                    "Septoria Leaf Spot", "Spider Mites Two-spotted Spider Mite",
-                    "Target Spot", "Tomato Yellow Leaf Curl Virus", "Tomato Mosaic Virus",
-                    "Tomato Healthy"};
+            String[] classes = {"Apple Scab", "Apple Black Rot", "Cedar Apple Rust", "Healthy Apple", "Healthy Blueberry",
+                    "Cherry Powdery mildew", "Healthy Cherry", "Corn Gray leaf spot",
+                    "Corn Common Rust", "Corn Northern Leaf Blight", "Healthy Corn", "Grape Black Rot", "Grape Black Measles",
+                    "Grape Leaf blight", "Healthy Grape", "Orange Haunglongbing",
+                    "Peach Bacterial Spot", "Peach Healthy", "Pepper Bacterial Spot", "Healthy Pepper", "Potato Early Blight",
+                    "Healthy Potato", "Potato Late Blight", "Healthy Raspberry", "Healthy Soyabean", "Squash Powdery Mildew", "Strawberry Healthy", "Strawberry Leaf Scorch",
+                    "Tomato Bacterial Spot", "Tomato Early Blight", "Tomato Healthy", "Tomato Late Blight", "Tomato Leaf Mold",
+                    "Tomato Septoria Leaf Spot", "Tomato Spider Mites Two-spotted Spider Mite",
+                    "Tomato Target Spot", "Tomato Mosaic Virus", "Tomato Yellow Leaf Curl Virus"};
 
             result.setText(" " + classes[maxPos]);
             Arrays.fill(confidence, 0);
